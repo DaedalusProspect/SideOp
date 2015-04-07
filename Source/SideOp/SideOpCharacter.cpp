@@ -224,9 +224,11 @@ void ASideOpCharacter::Crouching_Implementation()
 		GetCapsuleComponent()->SetCapsuleHalfHeight(48.0f);
 		bCanMove = false;
 		bCanJump = false;
+		ServerRPCSetCrouch(); // Set the var on client and server so it replicates
+		UpdateAnimation();
 	}
-	ServerRPCSetCrouch(); // Set the var on client and server so it replicates
-	UpdateAnimation();
+	
+
 }
 
 void ASideOpCharacter::StopCrouching_Implementation()

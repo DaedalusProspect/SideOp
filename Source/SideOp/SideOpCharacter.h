@@ -141,5 +141,6 @@ public:
 
 	bool bCanMove;
 	bool bCanJump;
+	int32 CurrentHH;
 
 };

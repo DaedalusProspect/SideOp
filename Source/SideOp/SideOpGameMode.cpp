@@ -3,6 +3,7 @@
 #include "SideOp.h"
 #include "SideOpGameMode.h"
 #include "SideOpCharacter.h"
+#include "SideOpPlayerController.h"
 
 ASideOpGameMode::ASideOpGameMode(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -20,7 +21,7 @@ ASideOpGameMode::ASideOpGameMode(const FObjectInitializer& ObjectInitializer)
 		DefaultPawnClass = PlayerDefaultPawnObject.Class; 
 
 	}
-
+	
 	// Set the rest of the characters
 	if (BluePlayerObject.Class != NULL)
 	{
@@ -52,14 +53,13 @@ ASideOpGameMode::ASideOpGameMode(const FObjectInitializer& ObjectInitializer)
 		UE_LOG(LogTemp, Warning, TEXT("Pink Pawn Set"));
 	}
 
+	LastUsedPawn = 0;
 	
-
 }
 
 void ASideOpGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	InitialID = GetWorld()->GetGameState()->PlayerArray[0]->PlayerId;
 }
 
 
@@ -67,86 +67,15 @@ void ASideOpGameMode::BeginPlay()
 UClass* ASideOpGameMode::GetDefaultPawnClassForController(AController* InController)
 {
 	Super::GetDefaultPawnClassForController(InController);
-	APlayerController* PC = InController->CastToPlayerController();
-	int32 PlayerID = PC->PlayerState->PlayerId;
-	
-	UE_LOG(LogTemp, Warning, TEXT("Player ID is: %d"), PlayerID);
-
-
-	if (PlayerID == InitialID)
+	ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(InController);
+	TSubclassOf<APawn> ClassToUse = nullptr;
+	if (PC != nullptr)
 	{
-		if (BluePlayer)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Using Blue Player"));
-			return BluePlayer;
-
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Using the default Player"));
-			return DefaultPawnClass;
-		}
-	}
-	else if (PlayerID == (InitialID + 1))
-	{
-		if (BeigePlayer)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Using Beige Player"));
-			return BeigePlayer;
-
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Using the default Player"));
-			return DefaultPawnClass;
-		}
-	}
-	else if (PlayerID == (InitialID + 2))
-	{
-		if (GreenPlayer)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Using Green Player"));
-			return GreenPlayer;
-
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Using the default Player"));
-			return DefaultPawnClass;
-		}
-	}
-	else if (PlayerID == (InitialID + 3))
-	{
-		if (YellowPlayer)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Using Yellow Player"));
-			return YellowPlayer;
-
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Using the default Player"));
-			return DefaultPawnClass;
-		}
-	}
-	else if (PlayerID == (InitialID + 4))
-	{
-		if (PinkPlayer)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Using Pink Player"));
-			return PinkPlayer;
-
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Using the default Player"));
-			return DefaultPawnClass;
-		}
+		ClassToUse = PC->GetPlayerPawnClass();
+		return ClassToUse;
 	}
 	else
 	{
-
-		UE_LOG(LogTemp, Warning, TEXT("We're using the default :/"));
 		return DefaultPawnClass;
 	}
 }
