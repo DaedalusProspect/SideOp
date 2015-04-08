@@ -53,7 +53,6 @@ ASideOpGameMode::ASideOpGameMode(const FObjectInitializer& ObjectInitializer)
 		UE_LOG(LogTemp, Warning, TEXT("Pink Pawn Set"));
 	}
 
-	LastUsedPawn = 0;
 	
 }
 

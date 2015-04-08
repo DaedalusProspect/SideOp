@@ -48,7 +48,6 @@ ASideOpPlayerController::ASideOpPlayerController(const FObjectInitializer& Objec
 	PlayerPawn = BluePlayer; // For whatever reason, this always sets the servers pawn. The rest of the set pawn code does nothing for it.
 	// Set to replicate
 	bReplicates = true;
-	PawnIsSet = false;
 
 }
 void ASideOpPlayerController::SetupInputComponent()

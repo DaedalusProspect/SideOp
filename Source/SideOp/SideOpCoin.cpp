@@ -18,10 +18,6 @@ ASideOpCoin::ASideOpCoin(const FObjectInitializer& ObjectInitializer)
 	CollisionComp->InitCapsuleSize(28.0f, 28.0f);
 	RootComponent = CollisionComp;
 
-
-
-
-
 }
 
 // Called when the game starts or when spawned

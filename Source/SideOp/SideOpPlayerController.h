@@ -65,5 +65,4 @@ public:
 	void SetPCPawn();
 	void SetPCPawn_Implementation();
 
-	bool PawnIsSet;
 };

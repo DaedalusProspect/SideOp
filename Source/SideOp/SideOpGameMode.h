@@ -36,6 +36,4 @@ public:
 	virtual void BeginPlay() override;
 	virtual UClass* GetDefaultPawnClassForController(AController* InController) override;
 
-	int32 LastUsedPawn;
-	TArray<TSubclassOf<APawn>> PawnsInPlay; // Array of our pawns in play
 };
