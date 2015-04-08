@@ -99,7 +99,14 @@ protected:
 	// Current Animation Frame
 	class UPaperFlipbook* CurrentAnimation;
 
+	// How many coins we've collected
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Transient)
+	int32 CoinsCollected;
 
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerRPCUpdateCoins(int32 Coins);
+	virtual bool ServerRPCUpdateCoins_Validate(int32 Coins);
+	virtual void ServerRPCUpdateCoins_Implementation(int32 Coins);
 
 
 
@@ -111,33 +118,39 @@ public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
+	FORCEINLINE int32 GetCoinsCollected(){ return CoinsCollected; }
+
 	// Networking functions
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerRPCSetCrouch();
 	bool ServerRPCSetCrouch_Validate();
 	void ServerRPCSetCrouch_Implementation();
-
-	UFUNCTION(NetMulticast, Reliable)
-	void MulticastRPCSetCrouch();
-	void MulticastRPCSetCrouch_Implementation();
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Player)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
 	float PlayerHealth;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Player)
 	int32 PlayerLives;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Player)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Category = Player)
 	bool bIsCrouching;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Player)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
 	bool bIsSwimming;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Player)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
 	bool bIsFalling;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Player)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
 	bool bIsRunning;
+
+	// Called to add a coin to our characters score
+	UFUNCTION(BlueprintCallable, Category = "Coins")
+	void AddCoin();
+
+	// Called to subtract a coin from our character
+	UFUNCTION(BlueprintCallable, Category = "Coins")
+	void SubtractCoin();
 
 	bool bCanMove;
 	bool bCanJump;

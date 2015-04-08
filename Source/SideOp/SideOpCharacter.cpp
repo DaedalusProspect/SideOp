@@ -219,29 +219,44 @@ void ASideOpCharacter::StopJump_Implementation()
 
 void ASideOpCharacter::Crouching_Implementation()
 {
-	if (!bIsCrouching)
+	// See if were swimming first
+	if (GetCharacterMovement()->IsInWater())
 	{
-		GetCapsuleComponent()->SetCapsuleHalfHeight(48.0f);
-		bCanMove = false;
-		bCanJump = false;
-		ServerRPCSetCrouch(); // Set the var on client and server so it replicates
-		UpdateAnimation();
 	}
-	
+	else
+	{
+		if (!bIsCrouching)
+		{
+			GetCapsuleComponent()->SetCapsuleHalfHeight(48.0f);
+			bCanMove = false;
+			bCanJump = false;
+			ServerRPCSetCrouch(); // Set the var on client and server so it replicates
+			UpdateAnimation();
+		}
+	}
 
 }
 
 void ASideOpCharacter::StopCrouching_Implementation()
 {
-	if (bIsCrouching)
+	// See if were swimming first
+	if (GetCharacterMovement()->IsInWater())
 	{
-		GetCapsuleComponent()->SetCapsuleHalfHeight(56.0f);
-		UpdateAnimation();
+		bIsCrouching = false;
 		bCanMove = true;
 		bCanJump = true;
-		ServerRPCSetCrouch();
+	}	
+	else
+	{
+		if (bIsCrouching)
+		{
+			GetCapsuleComponent()->SetCapsuleHalfHeight(56.0f);
+			UpdateAnimation();
+			bCanMove = true;
+			bCanJump = true;
+			ServerRPCSetCrouch();
+		}
 	}
-	
 }
 
 
@@ -250,6 +265,7 @@ void ASideOpCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & 
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ASideOpCharacter, bIsCrouching);
+	DOREPLIFETIME(ASideOpCharacter, CoinsCollected);
 }
 
 bool ASideOpCharacter::ServerRPCSetCrouch_Validate()
@@ -259,9 +275,16 @@ bool ASideOpCharacter::ServerRPCSetCrouch_Validate()
 
 void ASideOpCharacter::ServerRPCSetCrouch_Implementation()
 {
-	if (bIsCrouching == false)
+	if (!GetCharacterMovement()->IsInWater())
 	{
-		bIsCrouching = true;
+		if (bIsCrouching == false)
+		{
+			bIsCrouching = true;
+		}
+		else
+		{
+			bIsCrouching = false;
+		}
 	}
 	else
 	{
@@ -269,14 +292,32 @@ void ASideOpCharacter::ServerRPCSetCrouch_Implementation()
 	}
 }
 
-void ASideOpCharacter::MulticastRPCSetCrouch_Implementation()
+void ASideOpCharacter::AddCoin()
 {
-	if (bIsCrouching == false)
+	CoinsCollected++;
+	ServerRPCUpdateCoins(CoinsCollected);
+	if (GEngine)
 	{
-		bIsCrouching = true;
+		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Yellow, FString::Printf(TEXT("Got a coin!")));
 	}
-	else
+}
+
+void ASideOpCharacter::SubtractCoin()
+{
+	CoinsCollected--;
+	ServerRPCUpdateCoins(CoinsCollected);
+	if (GEngine)
 	{
-		bIsCrouching = false;
+		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Yellow, FString::Printf(TEXT("Lost a coin!")));
 	}
+}
+
+bool ASideOpCharacter::ServerRPCUpdateCoins_Validate(int32 Coins)
+{
+	return true;
+}
+
+void ASideOpCharacter::ServerRPCUpdateCoins_Implementation(int32 Coins)
+{
+	CoinsCollected = Coins;
 }
