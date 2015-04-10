@@ -16,9 +16,9 @@ ASideOpGameMode::ASideOpGameMode(const FObjectInitializer& ObjectInitializer)
 	static ConstructorHelpers::FClassFinder<APawn> PinkPlayerObject(TEXT("Pawn'/Game/Players/BP_Character_Pink.BP_Character_Pink_C'"));
 
 	// set default pawn class to our default character
-	if (PlayerDefaultPawnObject.Class != NULL /*&& HUDObject.Class != NULL*/)
+	if (PlayerDefaultPawnObject.Class != NULL)
 	{
-		DefaultPawnClass = PlayerDefaultPawnObject.Class; 
+		DefaultPawnClass = PlayerDefaultPawnObject.Class;
 
 	}
 	

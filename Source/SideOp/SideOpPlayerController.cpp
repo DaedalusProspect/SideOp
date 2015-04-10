@@ -48,6 +48,7 @@ ASideOpPlayerController::ASideOpPlayerController(const FObjectInitializer& Objec
 	PlayerPawn = BluePlayer; // For whatever reason, this always sets the servers pawn. The rest of the set pawn code does nothing for it.
 	// Set to replicate
 	bReplicates = true;
+	bPlayerSet = false;
 
 }
 void ASideOpPlayerController::SetupInputComponent()
@@ -65,15 +66,16 @@ void ASideOpPlayerController::BeginPlay()
 }
 
 
-bool ASideOpPlayerController::ServerRPCSetPawn_Validate(TSubclassOf<APawn> InPawnClass)
+bool ASideOpPlayerController::ServerRPCSetPawn_Validate(TSubclassOf<APawn> InPawnClass, EPlayerColor InColor, bool IsSet)
 {
 	return true;
 }
 
-void ASideOpPlayerController::ServerRPCSetPawn_Implementation(TSubclassOf<APawn> InPawnClass)
+void ASideOpPlayerController::ServerRPCSetPawn_Implementation(TSubclassOf<APawn> InPawnClass, EPlayerColor InColor, bool IsSet)
 {
 
 		PlayerPawn = InPawnClass;
+		PlayerColor = InColor;
 		// Only restart the player once for the beginning of the map
 		GetWorld()->GetAuthGameMode()->RestartPlayer(this);
 
@@ -83,32 +85,46 @@ void ASideOpPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimePropert
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ASideOpPlayerController, PlayerPawn);
+	DOREPLIFETIME(ASideOpPlayerController, PlayerColor);
+	DOREPLIFETIME(ASideOpPlayerController, bPlayerSet);
 }
 
 void ASideOpPlayerController::SetPCPawn_Implementation()
 {
-	int32 PlayerColor = FMath::RandRange(1 , 4);
-	switch (PlayerColor)
+	// This check is to make sure for whatever reason it doesnt try and reset our pawn color
+	if (bPlayerSet)
 	{
-	case 1:
-		PlayerPawn = BluePlayer;
-		ServerRPCSetPawn(PlayerPawn);
+		ServerRPCSetPawn(PlayerPawn, PlayerColor);
 		return;
-	case 2:
-		PlayerPawn = BeigePlayer;
-		ServerRPCSetPawn(PlayerPawn);
-		return;
-	case 3:
-		PlayerPawn = GreenPlayer;
-		ServerRPCSetPawn(PlayerPawn);
-		return;
-	case 4:
-		PlayerPawn = PinkPlayer;
-		ServerRPCSetPawn(PlayerPawn);
-		return;
-	default:
-		PlayerPawn = YellowPlayer;
-		ServerRPCSetPawn(PlayerPawn);
+	}
+	else
+	{
+		int32 PlayColor = FMath::RandRange(1, 4);
+		switch (PlayColor)
+		{
+		case 1:
+			PlayerPawn = BluePlayer;
+			PlayerColor = EPlayerColor::Blue;
+
+		case 2:
+			PlayerPawn = BeigePlayer;
+			PlayerColor = EPlayerColor::Beige;
+
+		case 3:
+			PlayerPawn = GreenPlayer;
+			PlayerColor = EPlayerColor::Green;
+
+		case 4:
+			PlayerPawn = PinkPlayer;
+			PlayerColor = EPlayerColor::Pink;
+
+		default:
+			PlayerPawn = BluePlayer;
+			PlayerColor = EPlayerColor::Blue;
+
+		}
+		ServerRPCSetPawn(PlayerPawn, PlayerColor);
+		bPlayerSet = true;
 		return;
 	}
 	return;

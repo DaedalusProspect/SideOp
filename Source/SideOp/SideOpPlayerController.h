@@ -5,6 +5,19 @@
 #include "GameFramework/PlayerController.h"
 #include "SideOpPlayerController.generated.h"
 
+
+/**
+ *
+ */
+UENUM(BlueprintType)
+enum class EPlayerColor : uint8
+{
+	Blue,
+	Beige,
+	Green,
+	Pink
+};
+
 /**
  * 
  */
@@ -26,29 +39,29 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(Reliable, Server, WithValidation)
-	void ServerRPCSetPawn(TSubclassOf<APawn> InPawnClass);
-	virtual void ServerRPCSetPawn_Implementation(TSubclassOf<APawn> InPawnClass);
-	virtual bool ServerRPCSetPawn_Validate(TSubclassOf<APawn> InPawnClass);
+	void ServerRPCSetPawn(TSubclassOf<APawn> InPawnClass, EPlayerColor InColor, bool IsSet);
+	virtual void ServerRPCSetPawn_Implementation(TSubclassOf<APawn> InPawnClass, EPlayerColor InColor, bool IsSet);
+	virtual bool ServerRPCSetPawn_Validate(TSubclassOf<APawn> InPawnClass, EPlayerColor InColor, bool IsSet);
 
 	UPROPERTY(Replicated)
 	TSubclassOf<APawn> PlayerPawn;
 
 	// Pawn for the BluePlayer
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Players)
-		TSubclassOf<APawn> BluePlayer;
+	TSubclassOf<APawn> BluePlayer;
 
 	// Pawn for the BeigePlayer
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Players)
-		TSubclassOf<APawn> BeigePlayer;
+	TSubclassOf<APawn> BeigePlayer;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Players)
-		TSubclassOf<APawn> GreenPlayer;
+	TSubclassOf<APawn> GreenPlayer;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Players)
-		TSubclassOf<APawn> PinkPlayer;
+	TSubclassOf<APawn> PinkPlayer;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Players)
-		TSubclassOf<APawn> YellowPlayer;
+	TSubclassOf<APawn> YellowPlayer;
 
 
 
@@ -65,4 +78,10 @@ public:
 	void SetPCPawn();
 	void SetPCPawn_Implementation();
 
+	// We need to keep track of our player color for the HUD, as well as for respawns
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated)
+	EPlayerColor PlayerColor;
+
+	UPROPERTY(VisibleAnywhere, Replicated)
+	bool bPlayerSet;
 };
