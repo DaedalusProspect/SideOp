@@ -14,26 +14,13 @@ class ASideOpGameMode : public AGameMode
 {
 	GENERATED_BODY()
 
+	UClass* GetDefaultPawnClassForController(AController* InController) override;
+
 
 public:
 	ASideOpGameMode(const FObjectInitializer& ObjectInitializer);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Players)
-	TSubclassOf<APawn> BluePlayer;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Players)
-	TSubclassOf<APawn> BeigePlayer;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Players)
-	TSubclassOf<APawn> GreenPlayer;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Players)
-	TSubclassOf<APawn> PinkPlayer;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Players)
-	TSubclassOf<APawn> YellowPlayer;
-
 	virtual void BeginPlay() override;
-	virtual UClass* GetDefaultPawnClassForController(AController* InController) override;
+	virtual void PostLogin(APlayerController* InController) override;
 
 };

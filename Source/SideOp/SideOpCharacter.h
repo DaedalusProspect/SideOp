@@ -36,21 +36,29 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
 	class UPaperFlipbook* RunningAnimation;
 
-	// The animation to play while idle (standing still)  - Blue Character / Default
+	// The animation to play while idle (standing still)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
 	class UPaperFlipbook* IdleAnimation;
 
-	// The animation to play while jumping - Blue Character / Default
+	// The animation to play while jumping
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
 	class UPaperFlipbook* JumpAnimation;
 
-	// The animation to play while ducking  - Blue Character / Default
+	// The animation to play while ducking
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
 	class UPaperFlipbook* DuckAnimation;
 
-	// The animation to play while swimming - Blue Character / Default
+	// The animation to play while swimming
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
 	class UPaperFlipbook* SwimAnimation;
+
+	// The animation to play when the character is hit
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
+	class UPaperFlipbook* HitAnimation;
+
+	// The animation to play while climbing
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
+	class UPaperFlipbook* ClimbAnimation;
 
 	///////////////////////////////////////////////////////////////////////////
 
@@ -99,8 +107,11 @@ protected:
 	// Current Animation Frame
 	class UPaperFlipbook* CurrentAnimation;
 
+	// Overrides Jump so we can have variable jump height
+	void Jump() override;
+
 	// How many coins we've collected
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Transient)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Transient,Category = Gameplay)
 	int32 CoinsCollected;
 
 	UFUNCTION(Server, Reliable, WithValidation)
@@ -125,24 +136,62 @@ public:
 	void ServerRPCSetCrouch();
 	bool ServerRPCSetCrouch_Validate();
 	void ServerRPCSetCrouch_Implementation();
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
-	float PlayerHealth;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Player)
-	int32 PlayerLives;
-
+	// Is the character crouching?
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Category = Player)
 	bool bIsCrouching;
 
+	// Is the character swimming?
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
 	bool bIsSwimming;
 
+	// Is the character falling?
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
 	bool bIsFalling;
 
+	// Is the character running?
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
 	bool bIsRunning;
+
+	// Is the character climbing?
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
+	bool bIsClimbing;
+
+	// Was the character hit?
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
+	bool bIsHit;
+
+	// Is the character dying?
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
+	bool bIsDying;
+
+	/////////////////////////////////////
+
+	////////////////////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Player)
+	bool bIsPossessed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerPhysics)
+	float PlayerGravityScale;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerPhysics)
+	float PlayerAirControl;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerPhysics)
+	float PlayerJumpZVelocity;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerPhysics)
+	float PlayerGroundFriction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerPhysics)
+	float PlayerMaxWalkSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerPhysics)
+	float PlayerMaxFlySpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerPhysics)
+	float PlayerBouyancy;
+	//////////////////////////////////////
 
 	// Called to add a coin to our characters score
 	UFUNCTION(BlueprintCallable, Category = "Coins")
@@ -151,6 +200,9 @@ public:
 	// Called to subtract a coin from our character
 	UFUNCTION(BlueprintCallable, Category = "Coins")
 	void SubtractCoin();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Character)
+	bool bIsBlank;
 
 	bool bCanMove;
 	bool bCanJump;

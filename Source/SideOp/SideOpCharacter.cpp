@@ -12,7 +12,6 @@ ASideOpCharacter::ASideOpCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	
-	
 	GetSprite()->SetFlipbook(IdleAnimation); // Sets default idle animation
 	CurrentAnimation = IdleAnimation;
 
@@ -45,13 +44,16 @@ ASideOpCharacter::ASideOpCharacter(const FObjectInitializer& ObjectInitializer)
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 
 	// Configure character movement
-	GetCharacterMovement()->GravityScale = 2.0f;
-	GetCharacterMovement()->AirControl = 0.80f;
-	GetCharacterMovement()->JumpZVelocity = 1000.f;
-	GetCharacterMovement()->GroundFriction = 1.8f;
-	GetCharacterMovement()->MaxWalkSpeed = 900.0f;
-	GetCharacterMovement()->MaxFlySpeed = 900.0f;
-	GetCharacterMovement()->Buoyancy = 1.4f;
+	// SINCE THIS IS SET IN A BLUEPRINT, IT CANNOT BE SET IN THE CONSTRUCTOR
+	/*
+	GetCharacterMovement()->GravityScale = PlayerGravityScale;
+	GetCharacterMovement()->AirControl = PlayerAirControl;
+	GetCharacterMovement()->JumpZVelocity = PlayerJumpZVelocity;
+	GetCharacterMovement()->GroundFriction = PlayerGroundFriction;
+	GetCharacterMovement()->MaxWalkSpeed = PlayerMaxWalkSpeed;
+	GetCharacterMovement()->MaxFlySpeed = PlayerMaxFlySpeed;
+	GetCharacterMovement()->Buoyancy = PlayerBouyancy;
+	*/
 
 	// Let us be able to crouch
 	GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
@@ -68,14 +70,14 @@ ASideOpCharacter::ASideOpCharacter(const FObjectInitializer& ObjectInitializer)
 	// Enable replication on the Sprite component so animations show up when networked
 	GetSprite()->SetIsReplicated(true);
 	bReplicates = true;
+
+	// Set our bool so the controllers know its not possessed
+	bIsPossessed = false;
 	
 	// Other
 	bCanMove = true;
 	bCanJump = true;
-
-	// Set Health and Lives
-	PlayerHealth = 0.6f;
-	PlayerLives = 3;
+	bIsDying = false;
 }
 
 void ASideOpCharacter::Tick(float DeltaSeconds)
@@ -88,6 +90,15 @@ void ASideOpCharacter::Tick(float DeltaSeconds)
 void ASideOpCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// Configure character movement
+	GetCharacterMovement()->GravityScale = PlayerGravityScale;
+	GetCharacterMovement()->AirControl = PlayerAirControl;
+	GetCharacterMovement()->JumpZVelocity = PlayerJumpZVelocity;
+	GetCharacterMovement()->GroundFriction = PlayerGroundFriction;
+	GetCharacterMovement()->MaxWalkSpeed = PlayerMaxWalkSpeed;
+	GetCharacterMovement()->MaxFlySpeed = PlayerMaxFlySpeed;
+	GetCharacterMovement()->Buoyancy = PlayerBouyancy;
 	
 }
 
@@ -101,34 +112,31 @@ void ASideOpCharacter::UpdateAnimation()
 	const float PlayerSpeed = PlayerVelocity.Size();
 	//const float HalfHeight = GetCapsuleComponent()->
 
-	// Check if we're swimming
-	if (GetCharacterMovement()->IsInWater())
+	if (bIsHit) // Check if we were damaged
+	{
+		CurrentAnimation = HitAnimation;
+	}
+	else if (GetCharacterMovement()->IsInWater())// Check if we're swimming
 	{
 		CurrentAnimation = SwimAnimation;
 	}
-	else
+	else if (bIsCrouching)// Check if were crouching
 	{
-		// Check if were jumping or falling or crouching
-		if (bIsCrouching)
-		{
-			CurrentAnimation = DuckAnimation;
-		}
-		else if (GetVelocity().Z != 0 && !(GetCharacterMovement()->IsInWater()))
-		{
-			CurrentAnimation = JumpAnimation;
-		}
-		else
-		{
-			if (PlayerSpeed > 0 && !(GetVelocity().Z != 0) && !(GetCharacterMovement()->IsInWater()))
-			{
-				CurrentAnimation = RunningAnimation;
-			}
-			else
-			{
-				CurrentAnimation = IdleAnimation;
-			}
-		}
+		CurrentAnimation = DuckAnimation;
 	}
+	else if (GetVelocity().Z != 0 && !(GetCharacterMovement()->IsInWater())) // Check if were falling
+	{
+		CurrentAnimation = JumpAnimation;
+	}
+	else if (PlayerSpeed > 0 && !(GetVelocity().Z != 0) && !(GetCharacterMovement()->IsInWater())) // Check if were running
+	{
+		CurrentAnimation = RunningAnimation;
+	}
+	else // Otherwise, just set ourselves to idle
+	{
+		CurrentAnimation = IdleAnimation;
+	}
+
 	GetSprite()->SetFlipbook(CurrentAnimation);
 }
 
@@ -180,6 +188,15 @@ void ASideOpCharacter::MoveUp_Implementation(float Value)
 	if (GetCharacterMovement()->IsInWater())
 	{
 		AddMovementInput(FVector(0.0f, 0.0f, 1.0f), Value);
+	}
+}
+
+void ASideOpCharacter::Jump()
+{
+	if (CanJump())
+	{
+		bPressedJump = true;
+		JumpKeyHoldTime = 0.0f;
 	}
 }
 
