@@ -79,7 +79,13 @@ public:
 	FORCEINLINE UClass* GetPlayerPawnClass(){ return PlayerPawn; }
 
 	// We need to keep track of our player color for the HUD, as well as for respawns
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Category=Player)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Category = Player)
 	EPlayerColor PlayerColor;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Player)
+	int32 PlayerLives;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Player)
+	float PlayerHealth;
 
 };
