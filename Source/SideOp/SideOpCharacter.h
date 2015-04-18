@@ -62,6 +62,28 @@ protected:
 
 	///////////////////////////////////////////////////////////////////////////
 
+	// The modifier for this class's run speed
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterClass)
+	float RunSpeedModifier;
+
+	// The modifier for this class's gravity
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterClass)
+	float GravityModifier;
+
+	// This classes attack damage
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterClass)
+	float AttackDamage;
+
+	// How much defense does the character have
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterClass)
+	float Defense;
+
+	// How much is the base health for this class
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterClass)
+	int32 BaseHealth;
+
+	//////////////////////////////////////////////////////////////////////////
+
 	/** Called to choose the correct animation to play based on the character's movement state */
 	void UpdateAnimation();
 

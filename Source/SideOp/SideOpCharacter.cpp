@@ -91,12 +91,12 @@ void ASideOpCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Configure character movement
-	GetCharacterMovement()->GravityScale = PlayerGravityScale;
+	// Configure character movement and physics based on the characters play class
+	GetCharacterMovement()->GravityScale = PlayerGravityScale * GravityModifier;
 	GetCharacterMovement()->AirControl = PlayerAirControl;
 	GetCharacterMovement()->JumpZVelocity = PlayerJumpZVelocity;
 	GetCharacterMovement()->GroundFriction = PlayerGroundFriction;
-	GetCharacterMovement()->MaxWalkSpeed = PlayerMaxWalkSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = PlayerMaxWalkSpeed * RunSpeedModifier;
 	GetCharacterMovement()->MaxFlySpeed = PlayerMaxFlySpeed;
 	GetCharacterMovement()->Buoyancy = PlayerBouyancy;
 	
