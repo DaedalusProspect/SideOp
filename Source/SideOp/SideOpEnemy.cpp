@@ -9,6 +9,8 @@ ASideOpEnemy::ASideOpEnemy()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	bReplicates = true;
+	
 
 }
 
@@ -33,3 +35,9 @@ void ASideOpEnemy::SetupPlayerInputComponent(class UInputComponent* InputCompone
 
 }
 
+void ASideOpEnemy::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ASideOpEnemy, EnemyHP);
+}

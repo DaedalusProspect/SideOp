@@ -30,7 +30,25 @@ class SIDEOP_API ASideOpPlayerController : public APlayerController
 
 
 
+
 protected:
+
+	// We need to keep track of our player color for the HUD, as well as for respawns
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Category = Player)
+		EPlayerColor PlayerColor;
+
+	// How many lives we have left
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Player)
+		int32 PlayerLives;
+
+	// The health we have left
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Player)
+		float PlayerHealth;
+
+	// How many coins we've collected
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Transient, Category = Gameplay)
+		int32 CoinsCollected;
+
 
 	virtual void SetupInputComponent() override;
 
@@ -45,6 +63,16 @@ protected:
 	virtual void ServerRPCSetPawn_Implementation(TSubclassOf<APawn> InPawnClass);
 	virtual bool ServerRPCSetPawn_Validate(TSubclassOf<APawn> InPawnClass);
 
+	UFUNCTION(Reliable, Server, WithValidation)
+	void ServerRPCAddCoin();
+	virtual void ServerRPCAddCoin_Implementation();
+	virtual bool ServerRPCAddCoin_Validate();
+
+	UFUNCTION(Reliable, Server, WithValidation)
+	void ServerRPCSubtractCoin();
+	virtual void ServerRPCSubtractCoin_Implementation();
+	virtual bool ServerRPCSubtractCoin_Validate();
+	///////////////////////////////////////////////////////////////////////////
 	UPROPERTY(Replicated)
 	TSubclassOf<APawn> PlayerPawn;
 
@@ -68,7 +96,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Players)
 	TSubclassOf<APawn> YellowPlayer;
 
-
+	//////////////////////////////////////////////////////////////////////////////////
 
 public:
 
@@ -77,15 +105,22 @@ public:
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	FORCEINLINE UClass* GetPlayerPawnClass(){ return PlayerPawn; }
+	FORCEINLINE EPlayerColor GetPlayerColor(){ return PlayerColor; }
+	FORCEINLINE int32 GetPlayerLives(){ return PlayerLives; }
+	FORCEINLINE float GetPlayerHealth(){ return PlayerHealth; }
 
-	// We need to keep track of our player color for the HUD, as well as for respawns
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Category = Player)
-	EPlayerColor PlayerColor;
+	FORCEINLINE void SetPlayerColor(EPlayerColor Color){ PlayerColor = Color; }
+	FORCEINLINE void SetPlayerLives(int32 Lives){ PlayerLives = Lives; }
+	FORCEINLINE void SetPlayerHealth(float Health){ PlayerHealth = Health; }
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Player)
-	int32 PlayerLives;
+	// Called to add a coin to our characters score
+	UFUNCTION(BlueprintCallable, Category = "Coins")
+	void AddCoin();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Player)
-	float PlayerHealth;
+	// Called to subtract a coin from our character
+	UFUNCTION(BlueprintCallable, Category = "Coins")
+	void SubtractCoin();
+
+	void Die();
 
 };

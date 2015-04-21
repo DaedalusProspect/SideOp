@@ -10,6 +10,14 @@ class SIDEOP_API ASideOpEnemy : public APawn
 {
 	GENERATED_BODY()
 
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "Stats")
+	float EnemyHP;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "Stats")
+	float EnemyAttack;
+
 public:
 	// Sets default values for this pawn's properties
 	ASideOpEnemy();
@@ -23,6 +31,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-	
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
 	
 };

@@ -2,6 +2,7 @@
 
 #include "SideOp.h"
 #include "SideOpCharacter.h"
+#include "SideOpPlayerController.h"
 #include "PaperFlipbookComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -37,6 +38,21 @@ ASideOpCharacter::ASideOpCharacter(const FObjectInitializer& ObjectInitializer)
 	SideViewCameraComponent->ProjectionMode = ECameraProjectionMode::Orthographic;
 	SideViewCameraComponent->OrthoWidth = 2048.0f;
 	SideViewCameraComponent->AttachTo(CameraBoom, USpringArmComponent::SocketName);
+
+	TextBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("TextBoom"));
+	TextBoom->AttachTo(RootComponent);
+	TextBoom->TargetArmLength = 100.0f;
+	TextBoom->SocketOffset = FVector(0.0f, 0.0f, 75.0f);
+	TextBoom->bAbsoluteRotation = true;
+	TextBoom->RelativeRotation = FRotator(0.0f, -90.0f, 0.0f);
+
+	// Setup our Text Renderer
+	TextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TextComponent"));
+	TextComponent->SetVisibility(true);
+	TextComponent->AttachTo(TextBoom, USpringArmComponent::SocketName);
+	TextComponent->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
+	TextComponent->SetFont(TextFont);
+	TextComponent->SetText("TEST");
 
 	// Prevent all automatic rotation behavior on the camera, character, and camera component
 	CameraBoom->bAbsoluteRotation = true;
@@ -112,7 +128,7 @@ void ASideOpCharacter::UpdateAnimation()
 	const float PlayerSpeed = PlayerVelocity.Size();
 	//const float HalfHeight = GetCapsuleComponent()->
 
-	if (bIsHit) // Check if we were damaged
+	if (bIsHit || bIsDying) // Check if we were damaged or dying
 	{
 		CurrentAnimation = HitAnimation;
 	}
@@ -282,7 +298,6 @@ void ASideOpCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & 
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ASideOpCharacter, bIsCrouching);
-	DOREPLIFETIME(ASideOpCharacter, CoinsCollected);
 }
 
 bool ASideOpCharacter::ServerRPCSetCrouch_Validate()
@@ -311,21 +326,19 @@ void ASideOpCharacter::ServerRPCSetCrouch_Implementation()
 
 void ASideOpCharacter::AddCoin()
 {
-	CoinsCollected++;
-	ServerRPCUpdateCoins(CoinsCollected);
-	if (GEngine)
+	ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(GetController());
+	if (PC)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Yellow, FString::Printf(TEXT("Got a coin!")));
+		PC->AddCoin();
 	}
 }
 
 void ASideOpCharacter::SubtractCoin()
 {
-	CoinsCollected--;
-	ServerRPCUpdateCoins(CoinsCollected);
-	if (GEngine)
+	ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(GetController());
+	if (PC)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Yellow, FString::Printf(TEXT("Lost a coin!")));
+		PC->SubtractCoin();
 	}
 }
 
@@ -337,4 +350,23 @@ bool ASideOpCharacter::ServerRPCUpdateCoins_Validate(int32 Coins)
 void ASideOpCharacter::ServerRPCUpdateCoins_Implementation(int32 Coins)
 {
 	CoinsCollected = Coins;
+}
+
+void ASideOpCharacter::OnDeath()
+{
+	// For now, just call die on the owning controller and set ourselves to dying
+	bIsDying = true;
+	UpdateAnimation();
+	ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(GetController());
+	if (PC)
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(1, 5, FColor::Yellow, FString::Printf(TEXT("The player has died.")));
+		}
+		TextComponent->SetText(TEXT("You have died!"));
+		TextComponent->SetVisibility(true);
+		//Destroy();
+		//PC->Die();
+	}
 }

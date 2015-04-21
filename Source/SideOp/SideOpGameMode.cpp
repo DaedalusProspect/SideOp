@@ -33,22 +33,22 @@ void ASideOpGameMode::PostLogin(APlayerController* InController)
 	switch (NumPlayers)
 	{
 	case 0:
-		PC->PlayerColor = EPlayerColor::Blue;
+		PC->SetPlayerColor(EPlayerColor::Blue);
 		break;
 	case 1:
-		PC->PlayerColor = EPlayerColor::Beige;
+		PC->SetPlayerColor(EPlayerColor::Beige);
 		break;
 	case 2:
-		PC->PlayerColor = EPlayerColor::Green;
+		PC->SetPlayerColor(EPlayerColor::Green);
 		break;
 	case 3:
-		PC->PlayerColor = EPlayerColor::Pink;
+		PC->SetPlayerColor(EPlayerColor::Pink);
 		break;
 	case 4:
-		PC->PlayerColor = EPlayerColor::Yellow;
+		PC->SetPlayerColor(EPlayerColor::Yellow);
 		break;
 	default:
-		PC->PlayerColor = EPlayerColor::Blue;
+		PC->SetPlayerColor(EPlayerColor::Blue);
 		break;
 	}
 	Super::PostLogin(InController);
