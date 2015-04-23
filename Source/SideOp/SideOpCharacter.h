@@ -18,20 +18,12 @@ class ASideOpCharacter : public APaperCharacter
 	GENERATED_BODY()
 
 	/** Side view camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera, meta=(AllowPrivateAccess="true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* SideViewCameraComponent;
 
 	/** Camera boom positioning the camera beside the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
-
-	/** A Text Renderer so we can pop up and tell when something happens **/
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Text, meta = (AllowPrivateAccess = "true"))
-	class UTextRenderComponent* TextComponent;
-
-	/** The boom for our Text **/
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Text, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* TextBoom;
 
 	// allow updates every tick
 	virtual void Tick(float DeltaSeconds) override;
@@ -68,7 +60,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
 	class UPaperFlipbook* ClimbAnimation;
 	////////////////////////////////////////////////////////////////////////
-	UPROPERTY(EditANywhere, BlueprintReadWrite,Category = Text)
+	UPROPERTY(EditANywhere, BlueprintReadWrite, Category = Text)
 	class UFont* TextFont;
 
 	///////////////////////////////////////////////////////////////////////////
@@ -168,7 +160,7 @@ protected:
 
 	// Stop crouching
 	UFUNCTION(BlueprintNativeEvent)
-	void StopCrouching(); 
+	void StopCrouching();
 	void StopCrouching_Implementation();
 
 	// Handle Jumping so we can add extra utilities.
@@ -225,8 +217,8 @@ public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
-	FORCEINLINE int32 GetCoinsCollected(){ return CoinsCollected; }
-
+	//FORCEINLINE int32 GetCoinsCollected(){ return CoinsCollected; }
+	FORCEINLINE void SetMovement(bool CanMove){ bCanMove = CanMove; }
 
 	////////////////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Player)

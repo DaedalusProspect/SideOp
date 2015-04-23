@@ -39,42 +39,13 @@ ASideOpCharacter::ASideOpCharacter(const FObjectInitializer& ObjectInitializer)
 	SideViewCameraComponent->OrthoWidth = 2048.0f;
 	SideViewCameraComponent->AttachTo(CameraBoom, USpringArmComponent::SocketName);
 
-	TextBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("TextBoom"));
-	TextBoom->AttachTo(RootComponent);
-	TextBoom->TargetArmLength = 100.0f;
-	TextBoom->SocketOffset = FVector(0.0f, 0.0f, 75.0f);
-	TextBoom->bAbsoluteRotation = true;
-	TextBoom->RelativeRotation = FRotator(0.0f, -90.0f, 0.0f);
-
-	// Setup our Text Renderer
-	TextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TextComponent"));
-	TextComponent->SetVisibility(true);
-	TextComponent->AttachTo(TextBoom, USpringArmComponent::SocketName);
-	TextComponent->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
-	TextComponent->SetFont(TextFont);
-	TextComponent->SetText("TEST");
-
 	// Prevent all automatic rotation behavior on the camera, character, and camera component
 	CameraBoom->bAbsoluteRotation = true;
 	SideViewCameraComponent->bUsePawnControlRotation = false;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 
-	// Configure character movement
-	// SINCE THIS IS SET IN A BLUEPRINT, IT CANNOT BE SET IN THE CONSTRUCTOR
-	/*
-	GetCharacterMovement()->GravityScale = PlayerGravityScale;
-	GetCharacterMovement()->AirControl = PlayerAirControl;
-	GetCharacterMovement()->JumpZVelocity = PlayerJumpZVelocity;
-	GetCharacterMovement()->GroundFriction = PlayerGroundFriction;
-	GetCharacterMovement()->MaxWalkSpeed = PlayerMaxWalkSpeed;
-	GetCharacterMovement()->MaxFlySpeed = PlayerMaxFlySpeed;
-	GetCharacterMovement()->Buoyancy = PlayerBouyancy;
-	*/
-
 	// Let us be able to crouch
 	GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
-
-
 
 	// Lock character motion onto the XZ plane, so the character can't move in or out of the screen
 	GetCharacterMovement()->bConstrainToPlane = true;
@@ -108,6 +79,8 @@ void ASideOpCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	// Configure character movement and physics based on the characters play class
+	// Normally, this is done in the constructor. However, we need special functionality
+	// To allow for physics changes on a per blutprint basis for the different player colors
 	GetCharacterMovement()->GravityScale = PlayerGravityScale * GravityModifier;
 	GetCharacterMovement()->AirControl = PlayerAirControl;
 	GetCharacterMovement()->JumpZVelocity = PlayerJumpZVelocity;
@@ -357,16 +330,10 @@ void ASideOpCharacter::OnDeath()
 	// For now, just call die on the owning controller and set ourselves to dying
 	bIsDying = true;
 	UpdateAnimation();
+	DisableInput(Cast<ASideOpPlayerController>(GetController()));
 	ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(GetController());
 	if (PC)
 	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(1, 5, FColor::Yellow, FString::Printf(TEXT("The player has died.")));
-		}
-		TextComponent->SetText(TEXT("You have died!"));
-		TextComponent->SetVisibility(true);
-		//Destroy();
-		//PC->Die();
+		PC->Die();
 	}
 }
