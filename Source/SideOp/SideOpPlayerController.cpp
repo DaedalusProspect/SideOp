@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SideOp.h"
+#include "SideOpPlayerState.h"
 #include "SideOpPlayerController.h"
 #include "SideOpGameMode.h"
 #include "SideOpCharacter.h"
@@ -19,13 +20,7 @@ ASideOpPlayerController::ASideOpPlayerController(const FObjectInitializer& Objec
 	bReplicates = true;
 
 	// Set our defaults
-	CoinsCollected = 0;
-	PlayerHealth = 1.0f;
 	PlayerLives = 3;
-	PlayerLevel = 1;
-	CurrentXP = 0.0f;
-	XPToLevel = 500.0f;
-	XPPercent = 0.0f;
 	MessageText = TEXT("");
 
 }
@@ -44,7 +39,6 @@ void ASideOpPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	DeterminePawnClass();
-	CalculateXPPercent();
 	
 }
 
@@ -109,15 +103,15 @@ void ASideOpPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimePropert
 	DOREPLIFETIME(ASideOpPlayerController, PlayerPawn);
 	DOREPLIFETIME(ASideOpPlayerController, PlayerColor);
 	DOREPLIFETIME(ASideOpPlayerController, PlayerLives);
-	DOREPLIFETIME(ASideOpPlayerController, PlayerHealth);
-	DOREPLIFETIME(ASideOpPlayerController, CoinsCollected);
 }
 
 // What to do when we die. This currently just brings up our message, and does respawn logic
 // Will most likely be split into multiple step functions
 void ASideOpPlayerController::Die_Implementation()
 {
-
+	//##########################################
+	// This should be done in the player/gamestate
+	//##########################################
 		if (PlayerLives > 0) // This is very simple right now. Just checks if we have lives and if we do, respawns us at start
 		{
 			PlayerLives--;
@@ -133,151 +127,18 @@ void ASideOpPlayerController::Die_Implementation()
 			MessageText = TEXT("GameOver");
 			return;
 		}
-}
-
-// The RPC to set our lives on the server
-void ASideOpPlayerController::ServerRPCSetLives_Implementation(int32 Lives)
-{
-	PlayerLives = Lives;
-}
-
-// Validation for the above  RPC
-bool ASideOpPlayerController::ServerRPCSetLives_Validate(int32 Lives)
-{
-	return true;
+	//#############################################
 }
 
 // Functionality when adding a coin. This will mostly likely be morphed into adding xp
 void ASideOpPlayerController::AddCoin()
 {
-	if (Role == ROLE_Authority)
+	ASideOpPlayerState* SideState = Cast<ASideOpPlayerState>(PlayerState);
+	if (SideState)
 	{
-		CoinsCollected++;
+		SideState->AddXP(50);
+		GEngine->AddOnScreenDebugMessage(2, 1.0f, FColor::Blue, TEXT("From Controller"));
 	}
-	else
-	{
-		ServerRPCAddCoin();
-	}
-	AddXP(50);
-}
-
-// Validation for the below RPC
-bool ASideOpPlayerController::ServerRPCAddCoin_Validate()
-{
-	return true;
-}
-
-// Server RPC on what to do when adding a coin
-void ASideOpPlayerController::ServerRPCAddCoin_Implementation()
-{
-		CoinsCollected++;
-}
-
-void ASideOpPlayerController::SubtractCoin()
-{
-	if (Role == ROLE_Authority)
-	{
-		CoinsCollected--;
-	}
-	else
-	{
-		ServerRPCSubtractCoin();
-	}
-}
-
-bool ASideOpPlayerController::ServerRPCSubtractCoin_Validate()
-{
-	return true;
-}
-
-void ASideOpPlayerController::ServerRPCSubtractCoin_Implementation()
-{
-		CoinsCollected--;
-}
-
-void ASideOpPlayerController::AddXP(int32 Amount)
-{
-	CurrentXP = CurrentXP + Amount;
-	CalculateXPPercent();
-	if (Role != ROLE_Authority)
-	{
-		ServerRPCAddXP(Amount);
-	}
-	if (CheckForLevelUp())
-	{
-		LevelUp();
-	}
-	
-}
-
-void ASideOpPlayerController::ServerRPCAddXP_Implementation(int32 Amount)
-{
-	CurrentXP = CurrentXP + Amount;
-	if (CheckForLevelUp())
-	{
-		LevelUp();
-	}
-}
-
-bool ASideOpPlayerController::ServerRPCAddXP_Validate(int32 Amount)
-{
-	return true;
-}
-
-void ASideOpPlayerController::SubtractXP(int32 Amount)
-{
-
-	CurrentXP = CurrentXP - Amount;
-	CalculateXPPercent();
-	if (Role != ROLE_Authority)
-	{
-		ServerRPCSubtractXP(Amount);
-	}
-}
-void ASideOpPlayerController::ServerRPCSubtractXP_Implementation(int32 Amount)
-{
-	CurrentXP = CurrentXP - Amount;
-}
-
-bool ASideOpPlayerController::ServerRPCSubtractXP_Validate(int32 Amount)
-{
-	return true;
-}
-
-bool ASideOpPlayerController::CheckForLevelUp()
-{
-	if (CurrentXP >= XPToLevel)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-void ASideOpPlayerController::LevelUp()
-{
-	PlayerLevel++;
-	CurrentXP = 0;
-	XPToLevel = 500 * PlayerLevel;
-	CalculateXPPercent();
-	if (Role != ROLE_Authority)
-	{
-		ServerRPCAddLevel();
-	}
-}
-
-void ASideOpPlayerController::ServerRPCAddLevel_Implementation()
-{
-	PlayerLevel++;
-	CurrentXP = 0;
-	XPToLevel = 500 * PlayerLevel;
-}
-
-bool ASideOpPlayerController::ServerRPCAddLevel_Validate()
-{
-	return true;
 }
 
 void ASideOpPlayerController::ClearMessage()
@@ -312,9 +173,4 @@ void ASideOpPlayerController::DisableMovement()
 	{
 		OurChar->DisableInput(this);
 	}
-}
-
-void ASideOpPlayerController::CalculateXPPercent()
-{
-	XPPercent = CurrentXP / XPToLevel;
 }

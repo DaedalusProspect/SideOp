@@ -24,6 +24,14 @@ ASideOpCharacter::ASideOpCharacter(const FObjectInitializer& ObjectInitializer)
 	// Set the size of our collision capsule.
 	GetCapsuleComponent()->SetCapsuleHalfHeight(56.0f);
 	GetCapsuleComponent()->SetCapsuleRadius(40.0f);
+	GetCapsuleComponent()->CanCharacterStepUpOn = ECB_Yes;
+
+	// Setup the head collision box (Only players collide with this)
+	//HeadBoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("HeadCollisionBox"));
+	//HeadBoxComp->AttachTo(RootComponent);
+	//HeadBoxComp->SetBoxExtent(FVector(32.0f, 32.0f, 55.0f));
+	//HeadBoxComp->BodyInstance.SetCollisionProfileName("BlockPawnOnly");
+	//HeadBoxComp->CanCharacterStepUpOn = ECB_Yes;
 
 	// Create a camera boom attached to the root (capsule)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
@@ -99,7 +107,7 @@ void ASideOpCharacter::UpdateAnimation()
 	// Some Data Holders
 	const FVector PlayerVelocity = GetVelocity();
 	const float PlayerSpeed = PlayerVelocity.Size();
-	//const float HalfHeight = GetCapsuleComponent()->
+
 
 	if (bIsHit || bIsDying) // Check if we were damaged or dying
 	{
@@ -109,11 +117,11 @@ void ASideOpCharacter::UpdateAnimation()
 	{
 		CurrentAnimation = SwimAnimation;
 	}
-	else if (bIsCrouching)// Check if were crouching
+	else if (bIsCrouched)// Check if were crouching
 	{
 		CurrentAnimation = DuckAnimation;
 	}
-	else if (GetVelocity().Z != 0 && !(GetCharacterMovement()->IsInWater())) // Check if were falling
+	else if (PlayerVelocity.Z != 0 && !(GetCharacterMovement()->IsInWater())) // Check if were falling
 	{
 		CurrentAnimation = JumpAnimation;
 	}
@@ -164,7 +172,7 @@ void ASideOpCharacter::MoveRight_Implementation(float Value)
 		}
 	}
 	// Make sure we can move
-	if (bCanMove && !bIsCrouching)
+	if (bCanMove)
 	{
 		// Apply the input to the character motion
 		AddMovementInput(FVector(1.0f, 0.0f, 0.0f), Value);
@@ -180,6 +188,7 @@ void ASideOpCharacter::MoveUp_Implementation(float Value)
 	}
 }
 
+// This is an override so we can add functionality to our jump
 void ASideOpCharacter::Jump()
 {
 	if (CanJump())
@@ -228,41 +237,27 @@ void ASideOpCharacter::Crouching_Implementation()
 	// See if were swimming first
 	if (GetCharacterMovement()->IsInWater())
 	{
+		// add code here to make us move down
 	}
 	else
 	{
-		if (!bIsCrouching)
+		if (!GetCharacterMovement()->IsFalling())
 		{
-			GetCapsuleComponent()->SetCapsuleHalfHeight(48.0f);
+			// Not falling, not in water, so crouch
+			Crouch();
+			UpdateAnimation();
 			bCanMove = false;
 			bCanJump = false;
-			ServerRPCSetCrouch(); // Set the var on client and server so it replicates
-			UpdateAnimation();
-		}
+		}	
 	}
 
 }
 
 void ASideOpCharacter::StopCrouching_Implementation()
 {
-	// See if were swimming first
-	if (GetCharacterMovement()->IsInWater())
-	{
-		bIsCrouching = false;
-		bCanMove = true;
-		bCanJump = true;
-	}	
-	else
-	{
-		if (bIsCrouching)
-		{
-			GetCapsuleComponent()->SetCapsuleHalfHeight(56.0f);
-			UpdateAnimation();
-			bCanMove = true;
-			bCanJump = true;
-			ServerRPCSetCrouch();
-		}
-	}
+	UnCrouch();
+	bCanMove = true;
+	bCanJump = true;
 }
 
 
@@ -270,31 +265,6 @@ void ASideOpCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & 
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(ASideOpCharacter, bIsCrouching);
-}
-
-bool ASideOpCharacter::ServerRPCSetCrouch_Validate()
-{
-	return true;
-}
-
-void ASideOpCharacter::ServerRPCSetCrouch_Implementation()
-{
-	if (!GetCharacterMovement()->IsInWater())
-	{
-		if (bIsCrouching == false)
-		{
-			bIsCrouching = true;
-		}
-		else
-		{
-			bIsCrouching = false;
-		}
-	}
-	else
-	{
-		bIsCrouching = false;
-	}
 }
 
 void ASideOpCharacter::AddCoin()
@@ -303,26 +273,8 @@ void ASideOpCharacter::AddCoin()
 	if (PC)
 	{
 		PC->AddCoin();
+		GEngine->AddOnScreenDebugMessage(1, 1.0f, FColor::Blue, TEXT("From Character"));
 	}
-}
-
-void ASideOpCharacter::SubtractCoin()
-{
-	ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(GetController());
-	if (PC)
-	{
-		PC->SubtractCoin();
-	}
-}
-
-bool ASideOpCharacter::ServerRPCUpdateCoins_Validate(int32 Coins)
-{
-	return true;
-}
-
-void ASideOpCharacter::ServerRPCUpdateCoins_Implementation(int32 Coins)
-{
-	CoinsCollected = Coins;
 }
 
 void ASideOpCharacter::OnDeath()

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "PaperCharacter.h"
+#include "SideOpPlayerController.h"
 #include "SideOpCharacter.generated.h"
 
 // This class is the default character for SideOp, and it is responsible for all
@@ -24,6 +25,9 @@ class ASideOpCharacter : public APaperCharacter
 	/** Camera boom positioning the camera beside the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
+
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	//class UBoxComponent* HeadBoxComp;
 
 	// allow updates every tick
 	virtual void Tick(float DeltaSeconds) override;
@@ -59,9 +63,6 @@ protected:
 	// The animation to play while climbing
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
 	class UPaperFlipbook* ClimbAnimation;
-	////////////////////////////////////////////////////////////////////////
-	UPROPERTY(EditANywhere, BlueprintReadWrite, Category = Text)
-	class UFont* TextFont;
 
 	///////////////////////////////////////////////////////////////////////////
 
@@ -73,29 +74,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterClass)
 	float GravityModifier;
 
-	// This classes attack damage
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterClass)
-	float AttackDamage;
-
-	// How much defense does the character have
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterClass)
-	float Defense;
-
-	// How much is the base health for this class
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterClass)
-	int32 BaseHealth;
-
-	// How many coins we've collected
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Transient, Category = Gameplay)
-	int32 CoinsCollected;
-
-	//////////////////////////////////////////////////////////////////////////
-
 	////////////////////////////////////////////////////////////////////////////////
-
-	// Is the character crouching?
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Category = Player)
-	bool bIsCrouching;
 
 	// Is the character swimming?
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
@@ -163,6 +142,7 @@ protected:
 	void StopCrouching();
 	void StopCrouching_Implementation();
 
+
 	// Handle Jumping so we can add extra utilities.
 	UFUNCTION(BlueprintNativeEvent)
 	void OnJump();
@@ -197,15 +177,10 @@ protected:
 
 	//////////////////////////////////////////////////////////////////////////////
 	// Networking functions
-	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerRPCUpdateCoins(int32 Coins);
-	virtual bool ServerRPCUpdateCoins_Validate(int32 Coins);
-	virtual void ServerRPCUpdateCoins_Implementation(int32 Coins);
-
-	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerRPCSetCrouch();
-	bool ServerRPCSetCrouch_Validate();
-	void ServerRPCSetCrouch_Implementation();
+	//UFUNCTION(Server, Reliable, WithValidation)
+	//void ServerRPCUpdateCoins(int32 Coins);
+	//virtual bool ServerRPCUpdateCoins_Validate(int32 Coins);
+	//virtual void ServerRPCUpdateCoins_Implementation(int32 Coins);
 
 	/////////////////////////////////////////////////////////////////////////////
 public:
@@ -251,13 +226,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Coins")
 	void AddCoin();
 
-	// Called to subtract a coin from our character
-	UFUNCTION(BlueprintCallable, Category = "Coins")
-	void SubtractCoin();
-
-	// Gameplay functions
-
 	// What to do when the character is dying
+	//UFUNCTION(BlueprintCallable, Category = Character)
+	//void Dying();
+
 	UFUNCTION(BlueprintCallable, Category = Character)
 	void OnDeath();
 

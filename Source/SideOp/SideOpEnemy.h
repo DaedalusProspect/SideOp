@@ -14,13 +14,15 @@ class SIDEOP_API ASideOpEnemy : public APawn
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "Stats")
 	float EnemyHP;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "Stats")
-	float EnemyAttack;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	int32 XPToGive;
 
 public:
 	// Sets default values for this pawn's properties
 	ASideOpEnemy();
+
+	FORCEINLINE int32 GetXPToGive(){ return XPToGive; }
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
