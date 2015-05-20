@@ -14,6 +14,7 @@ ASideOpPlayerState::ASideOpPlayerState(const FObjectInitializer& ObjectInitializ
 	PlayerColor = EPlayerColor::Unset;
 	PlayerLives = 3;
 	PlayerLevel = 1;
+	Stamina = 1.0f;
 	CurrentXP = 0;
 	LevelCompletion = 100.0f;
 	bPlayerQuit = false;
@@ -41,24 +42,6 @@ void ASideOpPlayerState::Reset()
 void ASideOpPlayerState::ClientInitialize(class AController* InController)
 {
 	// This is where code will go to get our player color
-	ASideOpPlayerController* OurPC = Cast<ASideOpPlayerController>(InController);
-	if (InController)
-	{
-		PlayerColor = OurPC->GetPlayerColor();
-		switch (PlayerColor)
-		{
-		case EPlayerColor::Blue:
-			PlayerName = TEXT("Blue Player"); // For testing purposes so  we can keep track of things
-		case EPlayerColor::Beige:
-			PlayerName = TEXT("Beige Player");
-		case EPlayerColor::Green:
-			PlayerName = TEXT("Green Player");
-		case EPlayerColor::Pink:
-			PlayerName = TEXT("Pink Player");
-		case EPlayerColor::Yellow:
-			PlayerName = TEXT("Yellow Player");
-		}
-	}
 }
 
 // Add lives to our player
@@ -123,6 +106,7 @@ void ASideOpPlayerState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > 
 	DOREPLIFETIME(ASideOpPlayerState, PlayerLives);
 	DOREPLIFETIME(ASideOpPlayerState, PlayerLevel);
 	DOREPLIFETIME(ASideOpPlayerState, LevelCompletion);
+	DOREPLIFETIME(ASideOpPlayerState, bIsSprinting);
 }
 
 // If we need to copy information to another player state

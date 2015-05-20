@@ -52,11 +52,20 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Transient, Replicated)
 	float LevelCompletion;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Transient)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Transient)
 	float XPPercent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Transient)
+	float Stamina;
 
 	// Did the user quit the match?
 	bool bPlayerQuit;
+
+	// Can we recharge
+	bool bCanRecharge;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
+	bool bIsSprinting;
 
 	/////////////////////
 
@@ -70,12 +79,17 @@ public:
 	FORCEINLINE int32 GetCurrentXP(){ return CurrentXP; }
 	FORCEINLINE float GetCompletionPercent(){ return LevelCompletion; }
 	FORCEINLINE bool DidPlayerQuit(){ return bPlayerQuit; }
-
+	FORCEINLINE bool IsSprinting(){ return bIsSprinting; }
+	FORCEINLINE void SetSprinting(bool Sprint){ bIsSprinting = Sprint; }
+	
 	// Add Lives to our player
 	void AddLives(int32 Lives);
 
 	// Add experience to our player
 	void AddXP(int32 XP);
+
+	// Let our stamina recharge over time
+	void RechargeStamina();
 
 	// Check for a level up
 	bool CheckForLevelUp();
@@ -99,6 +113,8 @@ public:
 	//UFUNCTION(Reliable, NetMulticast)
 	//void BroadcastDeath(class ASideOpPlayerState* KillerPlayerState, class ASideOpPlayerState* KilledPlayerState);
 	//void BroadcastDeath_Implementation(class ASideOpPlayerState* KillerPlayerState, class ASideOpPlayerState* KilledPlayerState);
+
+
 
 	// For copying our player state
 	virtual void CopyProperties(class APlayerState* PlayerState) override;

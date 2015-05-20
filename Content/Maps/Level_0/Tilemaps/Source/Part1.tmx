@@ -1,0 +1,884 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="24" tilewidth="128" tileheight="128" nextobjectid="1">
+ <tileset firstgid="1" name="Grass" tilewidth="128" tileheight="128">
+  <tile id="0">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grass.png"/>
+  </tile>
+  <tile id="1">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassCenter.png"/>
+  </tile>
+  <tile id="2">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassCenter_round.png"/>
+  </tile>
+  <tile id="3">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassCliff_left.png"/>
+  </tile>
+  <tile id="4">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassCliff_right.png"/>
+  </tile>
+  <tile id="5">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassCliffAlt_left.png"/>
+  </tile>
+  <tile id="6">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassCliffAlt_right.png"/>
+  </tile>
+  <tile id="7">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassCorner_left.png"/>
+  </tile>
+  <tile id="8">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassCorner_right.png"/>
+  </tile>
+  <tile id="9">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassHalf.png"/>
+  </tile>
+  <tile id="10">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassHalf_left.png"/>
+  </tile>
+  <tile id="11">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassHalf_mid.png"/>
+  </tile>
+  <tile id="12">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassHalf_right.png"/>
+  </tile>
+  <tile id="13">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassHill_left.png"/>
+  </tile>
+  <tile id="14">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassHill_right.png"/>
+  </tile>
+  <tile id="15">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassLeft.png"/>
+  </tile>
+  <tile id="16">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassMid.png"/>
+  </tile>
+  <tile id="17">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Grass/grassRight.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="19" name="Dirt" tilewidth="128" tileheight="128">
+  <tile id="0">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirt.png"/>
+  </tile>
+  <tile id="1">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtCenter.png"/>
+  </tile>
+  <tile id="2">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtCenter_rounded.png"/>
+  </tile>
+  <tile id="3">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtCliff_left.png"/>
+  </tile>
+  <tile id="4">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtCliff_right.png"/>
+  </tile>
+  <tile id="5">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtCliffAlt_left.png"/>
+  </tile>
+  <tile id="6">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtCliffAlt_right.png"/>
+  </tile>
+  <tile id="7">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtCorner_left.png"/>
+  </tile>
+  <tile id="8">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtCorner_right.png"/>
+  </tile>
+  <tile id="9">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtHalf.png"/>
+  </tile>
+  <tile id="10">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtHalf_left.png"/>
+  </tile>
+  <tile id="11">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtHalf_mid.png"/>
+  </tile>
+  <tile id="12">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtHalf_right.png"/>
+  </tile>
+  <tile id="13">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtHill_left.png"/>
+  </tile>
+  <tile id="14">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtHill_right.png"/>
+  </tile>
+  <tile id="15">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtLeft.png"/>
+  </tile>
+  <tile id="16">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtMid.png"/>
+  </tile>
+  <tile id="17">
+   <image width="128" height="128" source="D:/Assets/2D/Platformer Art Complete Pack_0/Platformer Pack Redux (360 assets)/PNG/Ground/Dirt/dirtRight.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="37" name="Tiles" tilewidth="128" tileheight="128">
+  <tile id="0">
+   <image width="128" height="128" source="D:/SideOp/Game/water.png"/>
+  </tile>
+  <tile id="1">
+   <image width="128" height="128" source="D:/SideOp/Game/waterTop_high.png"/>
+  </tile>
+  <tile id="2">
+   <image width="128" height="128" source="D:/SideOp/Game/waterTop_low.png"/>
+  </tile>
+  <tile id="3">
+   <image width="128" height="128" source="D:/SideOp/Game/beam (Custom).png"/>
+  </tile>
+  <tile id="4">
+   <image width="128" height="128" source="D:/SideOp/Game/beamBolts (Custom).png"/>
+  </tile>
+  <tile id="5">
+   <image width="128" height="128" source="D:/SideOp/Game/beamBoltsHoles (Custom).png"/>
+  </tile>
+  <tile id="6">
+   <image width="128" height="128" source="D:/SideOp/Game/beamBoltsNarrow (Custom).png"/>
+  </tile>
+  <tile id="7">
+   <image width="128" height="128" source="D:/SideOp/Game/beamDiagonalLeft (Custom).png"/>
+  </tile>
+  <tile id="8">
+   <image width="128" height="128" source="D:/SideOp/Game/beamDiagonalRight (Custom).png"/>
+  </tile>
+  <tile id="9">
+   <image width="128" height="128" source="D:/SideOp/Game/beamHoles (Custom).png"/>
+  </tile>
+  <tile id="10">
+   <image width="128" height="128" source="D:/SideOp/Game/beamNarrow (Custom).png"/>
+  </tile>
+  <tile id="11">
+   <image width="128" height="128" source="D:/SideOp/Game/brickBrown.png"/>
+  </tile>
+  <tile id="12">
+   <image width="128" height="128" source="D:/SideOp/Game/brickGrey.png"/>
+  </tile>
+  <tile id="13">
+   <image width="128" height="128" source="D:/SideOp/Game/bridgeA.png"/>
+  </tile>
+  <tile id="14">
+   <image width="128" height="128" source="D:/SideOp/Game/bridgeB.png"/>
+  </tile>
+  <tile id="15">
+   <image width="128" height="128" source="D:/SideOp/Game/bush.png"/>
+  </tile>
+  <tile id="16">
+   <image width="128" height="128" source="D:/SideOp/Game/cactus.png"/>
+  </tile>
+  <tile id="17">
+   <image width="128" height="128" source="D:/SideOp/Game/candyBlue (Custom).png"/>
+  </tile>
+  <tile id="18">
+   <image width="128" height="128" source="D:/SideOp/Game/candyGreen (Custom).png"/>
+  </tile>
+  <tile id="19">
+   <image width="128" height="128" source="D:/SideOp/Game/candyRed (Custom).png"/>
+  </tile>
+  <tile id="20">
+   <image width="128" height="128" source="D:/SideOp/Game/candyYellow (Custom).png"/>
+  </tile>
+  <tile id="21">
+   <image width="128" height="128" source="D:/SideOp/Game/caneGreen (Custom).png"/>
+  </tile>
+  <tile id="22">
+   <image width="128" height="128" source="D:/SideOp/Game/caneGreenSmall (Custom).png"/>
+  </tile>
+  <tile id="23">
+   <image width="128" height="128" source="D:/SideOp/Game/caneGreenTop (Custom).png"/>
+  </tile>
+  <tile id="24">
+   <image width="128" height="128" source="D:/SideOp/Game/caneGreenTopAlt (Custom).png"/>
+  </tile>
+  <tile id="25">
+   <image width="128" height="128" source="D:/SideOp/Game/canePink (Custom).png"/>
+  </tile>
+  <tile id="26">
+   <image width="128" height="128" source="D:/SideOp/Game/canePinkSmall (Custom).png"/>
+  </tile>
+  <tile id="27">
+   <image width="128" height="128" source="D:/SideOp/Game/canePinkTop (Custom).png"/>
+  </tile>
+  <tile id="28">
+   <image width="128" height="128" source="D:/SideOp/Game/canePinkTopAlt (Custom).png"/>
+  </tile>
+  <tile id="29">
+   <image width="128" height="128" source="D:/SideOp/Game/caneRed (Custom).png"/>
+  </tile>
+  <tile id="30">
+   <image width="128" height="128" source="D:/SideOp/Game/caneRedSmall (Custom).png"/>
+  </tile>
+  <tile id="31">
+   <image width="128" height="128" source="D:/SideOp/Game/caneRedTop (Custom).png"/>
+  </tile>
+  <tile id="32">
+   <image width="128" height="128" source="D:/SideOp/Game/caneRedTopAlt (Custom).png"/>
+  </tile>
+  <tile id="33">
+   <image width="128" height="128" source="D:/SideOp/Game/chain.png"/>
+  </tile>
+  <tile id="34">
+   <image width="128" height="128" source="D:/SideOp/Game/cherry (Custom).png"/>
+  </tile>
+  <tile id="35">
+   <image width="128" height="128" source="D:/SideOp/Game/cookieBrown (Custom).png"/>
+  </tile>
+  <tile id="36">
+   <image width="128" height="128" source="D:/SideOp/Game/cookieChoco (Custom).png"/>
+  </tile>
+  <tile id="37">
+   <image width="128" height="128" source="D:/SideOp/Game/cookiePink (Custom).png"/>
+  </tile>
+  <tile id="38">
+   <image width="128" height="128" source="D:/SideOp/Game/creamChoco (Custom).png"/>
+  </tile>
+  <tile id="39">
+   <image width="128" height="128" source="D:/SideOp/Game/creamMocca (Custom).png"/>
+  </tile>
+  <tile id="40">
+   <image width="128" height="128" source="D:/SideOp/Game/creamPink (Custom).png"/>
+  </tile>
+  <tile id="41">
+   <image width="128" height="128" source="D:/SideOp/Game/creamVanilla (Custom).png"/>
+  </tile>
+  <tile id="42">
+   <image width="128" height="128" source="D:/SideOp/Game/cupCake (Custom).png"/>
+  </tile>
+  <tile id="43">
+   <image width="128" height="128" source="D:/SideOp/Game/deadTree (Custom).png"/>
+  </tile>
+  <tile id="44">
+   <image width="128" height="128" source="D:/SideOp/Game/dirtCaveBL (Custom).png"/>
+  </tile>
+  <tile id="45">
+   <image width="128" height="128" source="D:/SideOp/Game/dirtCaveBottom (Custom).png"/>
+  </tile>
+  <tile id="46">
+   <image width="128" height="128" source="D:/SideOp/Game/dirtCaveBR (Custom).png"/>
+  </tile>
+  <tile id="47">
+   <image width="128" height="128" source="D:/SideOp/Game/dirtCaveRockLarge (Custom).png"/>
+  </tile>
+  <tile id="48">
+   <image width="128" height="128" source="D:/SideOp/Game/dirtCaveRockSmall (Custom).png"/>
+  </tile>
+  <tile id="49">
+   <image width="128" height="128" source="D:/SideOp/Game/dirtCaveSpikeBottom (Custom).png"/>
+  </tile>
+  <tile id="50">
+   <image width="128" height="128" source="D:/SideOp/Game/dirtCaveSpikeTop (Custom).png"/>
+  </tile>
+  <tile id="51">
+   <image width="128" height="128" source="D:/SideOp/Game/dirtCaveTop (Custom).png"/>
+  </tile>
+  <tile id="52">
+   <image width="128" height="128" source="D:/SideOp/Game/dirtCaveUL (Custom).png"/>
+  </tile>
+  <tile id="53">
+   <image width="128" height="128" source="D:/SideOp/Game/dirtCaveUR (Custom).png"/>
+  </tile>
+  <tile id="54">
+   <image width="128" height="128" source="D:/SideOp/Game/fence.png"/>
+  </tile>
+  <tile id="55">
+   <image width="128" height="128" source="D:/SideOp/Game/fenceBroken.png"/>
+  </tile>
+  <tile id="56">
+   <image width="128" height="128" source="D:/SideOp/Game/grass.png"/>
+  </tile>
+  <tile id="57">
+   <image width="128" height="128" source="D:/SideOp/Game/gummyWormGreenEnd (Custom).png"/>
+  </tile>
+  <tile id="58">
+   <image width="128" height="128" source="D:/SideOp/Game/gummyWormGreenHead (Custom).png"/>
+  </tile>
+  <tile id="59">
+   <image width="128" height="128" source="D:/SideOp/Game/gummyWormGreenMid (Custom).png"/>
+  </tile>
+  <tile id="60">
+   <image width="128" height="128" source="D:/SideOp/Game/gummyWormRedEnd (Custom).png"/>
+  </tile>
+  <tile id="61">
+   <image width="128" height="128" source="D:/SideOp/Game/gummyWormRedHead (Custom).png"/>
+  </tile>
+  <tile id="62">
+   <image width="128" height="128" source="D:/SideOp/Game/gummyWormRedMid (Custom).png"/>
+  </tile>
+  <tile id="63">
+   <image width="128" height="128" source="D:/SideOp/Game/heart (Custom).png"/>
+  </tile>
+  <tile id="64">
+   <image width="128" height="128" source="D:/SideOp/Game/hillCaneChoco (Custom).png"/>
+  </tile>
+  <tile id="65">
+   <image width="128" height="128" source="D:/SideOp/Game/hillCaneChocoTop (Custom).png"/>
+  </tile>
+  <tile id="66">
+   <image width="128" height="128" source="D:/SideOp/Game/hillCaneGreen (Custom).png"/>
+  </tile>
+  <tile id="67">
+   <image width="128" height="128" source="D:/SideOp/Game/hillCaneGreenTop (Custom).png"/>
+  </tile>
+  <tile id="68">
+   <image width="128" height="128" source="D:/SideOp/Game/hillCanePink (Custom).png"/>
+  </tile>
+  <tile id="69">
+   <image width="128" height="128" source="D:/SideOp/Game/hillCanePinkTop (Custom).png"/>
+  </tile>
+  <tile id="70">
+   <image width="128" height="128" source="D:/SideOp/Game/hillCaneRed (Custom).png"/>
+  </tile>
+  <tile id="71">
+   <image width="128" height="128" source="D:/SideOp/Game/hillCaneRedTop (Custom).png"/>
+  </tile>
+  <tile id="72">
+   <image width="128" height="128" source="D:/SideOp/Game/iceBlock (Custom).png"/>
+  </tile>
+  <tile id="73">
+   <image width="128" height="128" source="D:/SideOp/Game/iceBlockAlt (Custom).png"/>
+  </tile>
+  <tile id="74">
+   <image width="128" height="128" source="D:/SideOp/Game/iceBlockHalf (Custom).png"/>
+  </tile>
+  <tile id="75">
+   <image width="128" height="128" source="D:/SideOp/Game/iceBlockHalfAlt (Custom).png"/>
+  </tile>
+  <tile id="76">
+   <image width="128" height="128" source="D:/SideOp/Game/iceWater (Custom).png"/>
+  </tile>
+  <tile id="77">
+   <image width="128" height="128" source="D:/SideOp/Game/iceWaterAlt (Custom).png"/>
+  </tile>
+  <tile id="78">
+   <image width="128" height="128" source="D:/SideOp/Game/iceWaterDeep (Custom).png"/>
+  </tile>
+  <tile id="79">
+   <image width="128" height="128" source="D:/SideOp/Game/iceWaterDeepAlt (Custom).png"/>
+  </tile>
+  <tile id="80">
+   <image width="128" height="128" source="D:/SideOp/Game/iceWaterDeepStars (Custom).png"/>
+  </tile>
+  <tile id="81">
+   <image width="128" height="128" source="D:/SideOp/Game/iceWaterDeepStarsAlt (Custom).png"/>
+  </tile>
+  <tile id="82">
+   <image width="128" height="128" source="D:/SideOp/Game/iceWaterMid (Custom).png"/>
+  </tile>
+  <tile id="83">
+   <image width="128" height="128" source="D:/SideOp/Game/iceWaterMidAlt (Custom).png"/>
+  </tile>
+  <tile id="84">
+   <image width="128" height="128" source="D:/SideOp/Game/igloo (Custom).png"/>
+  </tile>
+  <tile id="85">
+   <image width="128" height="128" source="D:/SideOp/Game/iglooAlt (Custom).png"/>
+  </tile>
+  <tile id="86">
+   <image width="128" height="128" source="D:/SideOp/Game/iglooDoor (Custom).png"/>
+  </tile>
+  <tile id="87">
+   <image width="128" height="128" source="D:/SideOp/Game/iglooRoof (Custom).png"/>
+  </tile>
+  <tile id="88">
+   <image width="128" height="128" source="D:/SideOp/Game/iglooRoofLeft (Custom).png"/>
+  </tile>
+  <tile id="89">
+   <image width="128" height="128" source="D:/SideOp/Game/iglooRoofRight (Custom).png"/>
+  </tile>
+  <tile id="90">
+   <image width="128" height="128" source="D:/SideOp/Game/ladderMid.png"/>
+  </tile>
+  <tile id="91">
+   <image width="128" height="128" source="D:/SideOp/Game/ladderTop.png"/>
+  </tile>
+  <tile id="92">
+   <image width="128" height="128" source="D:/SideOp/Game/lava.png"/>
+  </tile>
+  <tile id="93">
+   <image width="128" height="128" source="D:/SideOp/Game/lavaTop_high.png"/>
+  </tile>
+  <tile id="94">
+   <image width="128" height="128" source="D:/SideOp/Game/lavaTop_low.png"/>
+  </tile>
+  <tile id="95">
+   <image width="128" height="128" source="D:/SideOp/Game/lollipopBase (Custom).png"/>
+  </tile>
+  <tile id="96">
+   <image width="128" height="128" source="D:/SideOp/Game/lollipopBaseBeige (Custom).png"/>
+  </tile>
+  <tile id="97">
+   <image width="128" height="128" source="D:/SideOp/Game/lollipopBaseBrown (Custom).png"/>
+  </tile>
+  <tile id="98">
+   <image width="128" height="128" source="D:/SideOp/Game/lollipopBaseCake (Custom).png"/>
+  </tile>
+  <tile id="99">
+   <image width="128" height="128" source="D:/SideOp/Game/lollipopBasePink (Custom).png"/>
+  </tile>
+  <tile id="100">
+   <image width="128" height="128" source="D:/SideOp/Game/lollipopFruitGreen (Custom).png"/>
+  </tile>
+  <tile id="101">
+   <image width="128" height="128" source="D:/SideOp/Game/lollipopFruitRed (Custom).png"/>
+  </tile>
+  <tile id="102">
+   <image width="128" height="128" source="D:/SideOp/Game/lollipopFruitYellow (Custom).png"/>
+  </tile>
+  <tile id="103">
+   <image width="128" height="128" source="D:/SideOp/Game/lollipopGreen (Custom).png"/>
+  </tile>
+  <tile id="104">
+   <image width="128" height="128" source="D:/SideOp/Game/lollipopRed (Custom).png"/>
+  </tile>
+  <tile id="105">
+   <image width="128" height="128" source="D:/SideOp/Game/lollipopWhiteGreen (Custom).png"/>
+  </tile>
+  <tile id="106">
+   <image width="128" height="128" source="D:/SideOp/Game/lollipopWhiteRed (Custom).png"/>
+  </tile>
+  <tile id="107">
+   <image width="128" height="128" source="D:/SideOp/Game/metal (Custom).png"/>
+  </tile>
+  <tile id="108">
+   <image width="128" height="128" source="D:/SideOp/Game/metalCenter (Custom).png"/>
+  </tile>
+  <tile id="109">
+   <image width="128" height="128" source="D:/SideOp/Game/metalCenterSticker (Custom).png"/>
+  </tile>
+  <tile id="110">
+   <image width="128" height="128" source="D:/SideOp/Game/metalCenterWarning (Custom).png"/>
+  </tile>
+  <tile id="111">
+   <image width="128" height="128" source="D:/SideOp/Game/metalCliffLeft (Custom).png"/>
+  </tile>
+  <tile id="112">
+   <image width="128" height="128" source="D:/SideOp/Game/metalCliffLeftAlt (Custom).png"/>
+  </tile>
+  <tile id="113">
+   <image width="128" height="128" source="D:/SideOp/Game/metalCliffRight (Custom).png"/>
+  </tile>
+  <tile id="114">
+   <image width="128" height="128" source="D:/SideOp/Game/metalCliffRightAlt (Custom).png"/>
+  </tile>
+  <tile id="115">
+   <image width="128" height="128" source="D:/SideOp/Game/metalFence (Custom).png"/>
+  </tile>
+  <tile id="116">
+   <image width="128" height="128" source="D:/SideOp/Game/metalFenceAlt (Custom).png"/>
+  </tile>
+  <tile id="117">
+   <image width="128" height="128" source="D:/SideOp/Game/metalHalf (Custom).png"/>
+  </tile>
+  <tile id="118">
+   <image width="128" height="128" source="D:/SideOp/Game/metalHalfLeft (Custom).png"/>
+  </tile>
+  <tile id="119">
+   <image width="128" height="128" source="D:/SideOp/Game/metalHalfMid (Custom).png"/>
+  </tile>
+  <tile id="120">
+   <image width="128" height="128" source="D:/SideOp/Game/metalHalfRight (Custom).png"/>
+  </tile>
+  <tile id="121">
+   <image width="128" height="128" source="D:/SideOp/Game/metalLeft (Custom).png"/>
+  </tile>
+  <tile id="122">
+   <image width="128" height="128" source="D:/SideOp/Game/metalMid (Custom).png"/>
+  </tile>
+  <tile id="123">
+   <image width="128" height="128" source="D:/SideOp/Game/metalPlatform (Custom).png"/>
+  </tile>
+  <tile id="124">
+   <image width="128" height="128" source="D:/SideOp/Game/metalPlatformWire (Custom).png"/>
+  </tile>
+  <tile id="125">
+   <image width="128" height="128" source="D:/SideOp/Game/metalPlatformWireAlt (Custom).png"/>
+  </tile>
+  <tile id="126">
+   <image width="128" height="128" source="D:/SideOp/Game/metalRight (Custom).png"/>
+  </tile>
+  <tile id="127">
+   <image width="128" height="128" source="D:/SideOp/Game/metalRounded (Custom).png"/>
+  </tile>
+  <tile id="128">
+   <image width="128" height="128" source="D:/SideOp/Game/mushroomRed.png"/>
+  </tile>
+  <tile id="129">
+   <image width="128" height="128" source="D:/SideOp/Game/pineSapling (Custom).png"/>
+  </tile>
+  <tile id="130">
+   <image width="128" height="128" source="D:/SideOp/Game/pineSaplingAlt (Custom).png"/>
+  </tile>
+  <tile id="131">
+   <image width="128" height="128" source="D:/SideOp/Game/plant (Custom).png"/>
+  </tile>
+  <tile id="132">
+   <image width="128" height="128" source="D:/SideOp/Game/plantAlt (Custom).png"/>
+  </tile>
+  <tile id="133">
+   <image width="128" height="128" source="D:/SideOp/Game/plantPurple.png"/>
+  </tile>
+  <tile id="134">
+   <image width="128" height="128" source="D:/SideOp/Game/rock.png"/>
+  </tile>
+  <tile id="135">
+   <image width="128" height="128" source="D:/SideOp/Game/rockAlt (Custom).png"/>
+  </tile>
+  <tile id="136">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownAltLeft (Custom).png"/>
+  </tile>
+  <tile id="137">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownAltMid (Custom).png"/>
+  </tile>
+  <tile id="138">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownAltMidAlt (Custom).png"/>
+  </tile>
+  <tile id="139">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownAltRight (Custom).png"/>
+  </tile>
+  <tile id="140">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownAltSpotsLeft (Custom).png"/>
+  </tile>
+  <tile id="141">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownAltSpotsMid (Custom).png"/>
+  </tile>
+  <tile id="142">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownAltSpotsMidAlt (Custom).png"/>
+  </tile>
+  <tile id="143">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownAltSpotsRight (Custom).png"/>
+  </tile>
+  <tile id="144">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownLeft (Custom).png"/>
+  </tile>
+  <tile id="145">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownMid (Custom).png"/>
+  </tile>
+  <tile id="146">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownMidAlt (Custom).png"/>
+  </tile>
+  <tile id="147">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownRight (Custom).png"/>
+  </tile>
+  <tile id="148">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownSpotsLeft (Custom).png"/>
+  </tile>
+  <tile id="149">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownSpotsMid (Custom).png"/>
+  </tile>
+  <tile id="150">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownSpotsMidAlt (Custom).png"/>
+  </tile>
+  <tile id="151">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomBrownSpotsRight (Custom).png"/>
+  </tile>
+  <tile id="152">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomRedAltLeft (Custom).png"/>
+  </tile>
+  <tile id="153">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomRedAltMid (Custom).png"/>
+  </tile>
+  <tile id="154">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomRedAltMidAlt (Custom).png"/>
+  </tile>
+  <tile id="155">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomRedAltRight (Custom).png"/>
+  </tile>
+  <tile id="156">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomRedLeft (Custom).png"/>
+  </tile>
+  <tile id="157">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomRedMid (Custom).png"/>
+  </tile>
+  <tile id="158">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomRedMidAlt (Custom).png"/>
+  </tile>
+  <tile id="159">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomRedRight (Custom).png"/>
+  </tile>
+  <tile id="160">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomTanAltLeft (Custom).png"/>
+  </tile>
+  <tile id="161">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomTanAltMid (Custom).png"/>
+  </tile>
+  <tile id="162">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomTanAltMidAlt (Custom).png"/>
+  </tile>
+  <tile id="163">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomTanAltRight (Custom).png"/>
+  </tile>
+  <tile id="164">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomTanLeft (Custom).png"/>
+  </tile>
+  <tile id="165">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomTanMid (Custom).png"/>
+  </tile>
+  <tile id="166">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomTanMidAlt (Custom).png"/>
+  </tile>
+  <tile id="167">
+   <image width="128" height="128" source="D:/SideOp/Game/shroomTanRight (Custom).png"/>
+  </tile>
+  <tile id="168">
+   <image width="128" height="128" source="D:/SideOp/Game/snow.png"/>
+  </tile>
+  <tile id="169">
+   <image width="128" height="128" source="D:/SideOp/Game/snowBall (Custom).png"/>
+  </tile>
+  <tile id="170">
+   <image width="128" height="128" source="D:/SideOp/Game/snowBallBig (Custom).png"/>
+  </tile>
+  <tile id="171">
+   <image width="128" height="128" source="D:/SideOp/Game/snowBallBigGround (Custom).png"/>
+  </tile>
+  <tile id="172">
+   <image width="128" height="128" source="D:/SideOp/Game/snowBallGround (Custom).png"/>
+  </tile>
+  <tile id="173">
+   <image width="128" height="128" source="D:/SideOp/Game/snowGroundLeft (Custom).png"/>
+  </tile>
+  <tile id="174">
+   <image width="128" height="128" source="D:/SideOp/Game/snowGroundRight (Custom).png"/>
+  </tile>
+  <tile id="175">
+   <image width="128" height="128" source="D:/SideOp/Game/snowHill (Custom).png"/>
+  </tile>
+  <tile id="176">
+   <image width="128" height="128" source="D:/SideOp/Game/snowHillLow (Custom).png"/>
+  </tile>
+  <tile id="177">
+   <image width="128" height="128" source="D:/SideOp/Game/snowLeft (Custom).png"/>
+  </tile>
+  <tile id="178">
+   <image width="128" height="128" source="D:/SideOp/Game/snowMid (Custom).png"/>
+  </tile>
+  <tile id="179">
+   <image width="128" height="128" source="D:/SideOp/Game/snowRight (Custom).png"/>
+  </tile>
+  <tile id="180">
+   <image width="128" height="128" source="D:/SideOp/Game/snowWave (Custom).png"/>
+  </tile>
+  <tile id="181">
+   <image width="128" height="128" source="D:/SideOp/Game/spikesBottom (Custom).png"/>
+  </tile>
+  <tile id="182">
+   <image width="128" height="128" source="D:/SideOp/Game/spikesBottomAlt (Custom).png"/>
+  </tile>
+  <tile id="183">
+   <image width="128" height="128" source="D:/SideOp/Game/spikesBottomAlt2 (Custom).png"/>
+  </tile>
+  <tile id="184">
+   <image width="128" height="128" source="D:/SideOp/Game/spikesTop (Custom).png"/>
+  </tile>
+  <tile id="185">
+   <image width="128" height="128" source="D:/SideOp/Game/spikesTopAlt (Custom).png"/>
+  </tile>
+  <tile id="186">
+   <image width="128" height="128" source="D:/SideOp/Game/spikesTopAlt2 (Custom).png"/>
+  </tile>
+  <tile id="187">
+   <image width="128" height="128" source="D:/SideOp/Game/spikeTop (Custom).png"/>
+  </tile>
+  <tile id="188">
+   <image width="128" height="128" source="D:/SideOp/Game/stem (Custom).png"/>
+  </tile>
+  <tile id="189">
+   <image width="128" height="128" source="D:/SideOp/Game/stemBase (Custom).png"/>
+  </tile>
+  <tile id="190">
+   <image width="128" height="128" source="D:/SideOp/Game/stemBaseAlt (Custom).png"/>
+  </tile>
+  <tile id="191">
+   <image width="128" height="128" source="D:/SideOp/Game/stemCrown (Custom).png"/>
+  </tile>
+  <tile id="192">
+   <image width="128" height="128" source="D:/SideOp/Game/stemShroom (Custom).png"/>
+  </tile>
+  <tile id="193">
+   <image width="128" height="128" source="D:/SideOp/Game/stemTop (Custom).png"/>
+  </tile>
+  <tile id="194">
+   <image width="128" height="128" source="D:/SideOp/Game/stemTopAlt (Custom).png"/>
+  </tile>
+  <tile id="195">
+   <image width="128" height="128" source="D:/SideOp/Game/stemVine (Custom).png"/>
+  </tile>
+  <tile id="196">
+   <image width="128" height="128" source="D:/SideOp/Game/stoneCaveBL (Custom).png"/>
+  </tile>
+  <tile id="197">
+   <image width="128" height="128" source="D:/SideOp/Game/stoneCaveBottom (Custom).png"/>
+  </tile>
+  <tile id="198">
+   <image width="128" height="128" source="D:/SideOp/Game/stoneCaveBR (Custom).png"/>
+  </tile>
+  <tile id="199">
+   <image width="128" height="128" source="D:/SideOp/Game/stoneCaveRockLarge (Custom).png"/>
+  </tile>
+  <tile id="200">
+   <image width="128" height="128" source="D:/SideOp/Game/stoneCaveRockSmall (Custom).png"/>
+  </tile>
+  <tile id="201">
+   <image width="128" height="128" source="D:/SideOp/Game/stoneCaveSpikeBottom (Custom).png"/>
+  </tile>
+  <tile id="202">
+   <image width="128" height="128" source="D:/SideOp/Game/stoneCaveSpikeTop (Custom).png"/>
+  </tile>
+  <tile id="203">
+   <image width="128" height="128" source="D:/SideOp/Game/stoneCaveTop (Custom).png"/>
+  </tile>
+  <tile id="204">
+   <image width="128" height="128" source="D:/SideOp/Game/stoneCaveUL (Custom).png"/>
+  </tile>
+  <tile id="205">
+   <image width="128" height="128" source="D:/SideOp/Game/stoneCaveUR (Custom).png"/>
+  </tile>
+  <tile id="206">
+   <image width="128" height="128" source="D:/SideOp/Game/tallShroom_brown (Custom).png"/>
+  </tile>
+  <tile id="207">
+   <image width="128" height="128" source="D:/SideOp/Game/tallShroom_red (Custom).png"/>
+  </tile>
+  <tile id="208">
+   <image width="128" height="128" source="D:/SideOp/Game/tallShroom_tan (Custom).png"/>
+  </tile>
+  <tile id="209">
+   <image width="128" height="128" source="D:/SideOp/Game/tile_20 (Custom).png"/>
+  </tile>
+  <tile id="210">
+   <image width="128" height="128" source="D:/SideOp/Game/tile_21 (Custom).png"/>
+  </tile>
+  <tile id="211">
+   <image width="128" height="128" source="D:/SideOp/Game/tinyShroom_brown (Custom).png"/>
+  </tile>
+  <tile id="212">
+   <image width="128" height="128" source="D:/SideOp/Game/tinyShroom_red (Custom).png"/>
+  </tile>
+  <tile id="213">
+   <image width="128" height="128" source="D:/SideOp/Game/tinyShroom_tan (Custom).png"/>
+  </tile>
+  <tile id="214">
+   <image width="128" height="128" source="D:/SideOp/Game/tree (Custom).png"/>
+  </tile>
+  <tile id="215">
+   <image width="128" height="128" source="D:/SideOp/Game/treeBranchesLeft (Custom).png"/>
+  </tile>
+  <tile id="216">
+   <image width="128" height="128" source="D:/SideOp/Game/treeBranchesLeftAlt (Custom).png"/>
+  </tile>
+  <tile id="217">
+   <image width="128" height="128" source="D:/SideOp/Game/treeBranchesLeftSnowAlt (Custom).png"/>
+  </tile>
+  <tile id="218">
+   <image width="128" height="128" source="D:/SideOp/Game/treeBranchesRight (Custom).png"/>
+  </tile>
+  <tile id="219">
+   <image width="128" height="128" source="D:/SideOp/Game/treeBranchesSnowLeft (Custom).png"/>
+  </tile>
+  <tile id="220">
+   <image width="128" height="128" source="D:/SideOp/Game/treeBranchesSnowRight (Custom).png"/>
+  </tile>
+  <tile id="221">
+   <image width="128" height="128" source="D:/SideOp/Game/treeBranchesSnowRightAlt (Custom).png"/>
+  </tile>
+  <tile id="222">
+   <image width="128" height="128" source="D:/SideOp/Game/treeBranchesSnowRightSnowAlt (Custom).png"/>
+  </tile>
+  <tile id="223">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTop (Custom).png"/>
+  </tile>
+  <tile id="224">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTopSnow (Custom).png"/>
+  </tile>
+  <tile id="225">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTrunk (Custom).png"/>
+  </tile>
+  <tile id="226">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTrunkBottom (Custom).png"/>
+  </tile>
+  <tile id="227">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTrunkBottomAlt (Custom).png"/>
+  </tile>
+  <tile id="228">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTrunkBottomAlt2 (Custom).png"/>
+  </tile>
+  <tile id="229">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTrunkBottomAlt3 (Custom).png"/>
+  </tile>
+  <tile id="230">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTrunkBranch (Custom).png"/>
+  </tile>
+  <tile id="231">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTrunkBranchEndLeft (Custom).png"/>
+  </tile>
+  <tile id="232">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTrunkBranchEndRight (Custom).png"/>
+  </tile>
+  <tile id="233">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTrunkBranchLeftAlt (Custom).png"/>
+  </tile>
+  <tile id="234">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTrunkBranchRightAlt (Custom).png"/>
+  </tile>
+  <tile id="235">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTrunkSplitLeft (Custom).png"/>
+  </tile>
+  <tile id="236">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTrunkSplitRight (Custom).png"/>
+  </tile>
+  <tile id="237">
+   <image width="128" height="128" source="D:/SideOp/Game/treeTrunkTop (Custom).png"/>
+  </tile>
+  <tile id="238">
+   <image width="128" height="128" source="D:/SideOp/Game/waffleChoco (Custom).png"/>
+  </tile>
+  <tile id="239">
+   <image width="128" height="128" source="D:/SideOp/Game/wafflePink (Custom).png"/>
+  </tile>
+  <tile id="240">
+   <image width="128" height="128" source="D:/SideOp/Game/waffleWhite (Custom).png"/>
+  </tile>
+  <tile id="241">
+   <image width="128" height="128" source="D:/SideOp/Game/water.png"/>
+  </tile>
+  <tile id="242">
+   <image width="128" height="128" source="D:/SideOp/Game/waterTop_high.png"/>
+  </tile>
+  <tile id="243">
+   <image width="128" height="128" source="D:/SideOp/Game/waterTop_low.png"/>
+  </tile>
+  <tile id="244">
+   <image width="128" height="128" source="D:/SideOp/Game/wireBottomLeft (Custom).png"/>
+  </tile>
+  <tile id="245">
+   <image width="128" height="128" source="D:/SideOp/Game/wireBottomRight (Custom).png"/>
+  </tile>
+  <tile id="246">
+   <image width="128" height="128" source="D:/SideOp/Game/wireHook (Custom).png"/>
+  </tile>
+  <tile id="247">
+   <image width="128" height="128" source="D:/SideOp/Game/wireLeft (Custom).png"/>
+  </tile>
+  <tile id="248">
+   <image width="128" height="128" source="D:/SideOp/Game/wireRight (Custom).png"/>
+  </tile>
+ </tileset>
+ <layer name="Base" width="64" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztl4sKgjAUhk9Cmd0vUkE3urz/M7aDG43jpmcz0K198GNOyX27wQFIxMLF8tt0z2EushBZevdouLxkQsdnXpFSJlS43leRm8idtHP9NyJbQ3aW99WeUfn13vGdb0pf8z/r4ZsmQl//XRmCv74WOOv6CdWZ/W5p4zAE/z6J2V+d+Xr08/8EcftzSP7/65/Wf/KP3f8A3xrPlNj9kZIRX9ZQ1UFjeT9quSomUK+lVp59eEB9Xo/a867+yhGTE4dCJPPsd0YyBfcxQPczNPt08Ud35WjypO207m2qf6m/6xjY3H38TbU9Rnfn+Ltg8ueOAc6LzV357+WV42/rC43NwYem7+AY5OR9/cwoWnx0QvS3/ad65rKfOf4fhkMSpw==
+  </data>
+ </layer>
+ <layer name="Land_Deco" width="64" height="24">
+  <data encoding="base64" compression="zlib">
+   eJzt0L0JgDAQhuEbQ8HKOEIWEWwsnFCHs3AAU1yRRkJ+SCK8D3wEwsF9iQgAAAAAAABKs3oemp5d0n/HFFuFHaF/OwvteSJmZxejWfTOfo/LlFoqwHjJMbiM+XWqu73EWgt3+Zu9dYGGSr/9BX2gCZE=
+  </data>
+ </layer>
+ <layer name="Water" width="64" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztw0EJAEAIADC7yGH/hv7lEugGiwAAAAAAYKM6Nsd36E8DZdESOA==
+  </data>
+ </layer>
+ <layer name="WaterEnd" width="64" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztz6ENACAMAEH2QLEDW8OQBIcgqaOIu6SmqfiWAhDrx0R3wBszO4CvjewAAACAx1p2QKL9e73sF6mYAoU=
+  </data>
+ </layer>
+</map>

@@ -33,28 +33,31 @@ void ASideOpGameMode::BeginPlay()
 void ASideOpGameMode::PostLogin(APlayerController* InController)
 {
 	ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(InController);
-	//ASideOpPlayerState* PS = Cast<ASideOpPlayerState>(PC->PlayerState);
+
 	// Set our player color based on this controllers player num
-	switch (NumPlayers)
+	if (PC)
 	{
-	case 0:
-		PC->SetPlayerColor(EPlayerColor::Blue);
-		break;
-	case 1:
-		PC->SetPlayerColor(EPlayerColor::Beige);
-		break;
-	case 2:
-		PC->SetPlayerColor(EPlayerColor::Green);
-		break;
-	case 3:
-		PC->SetPlayerColor(EPlayerColor::Pink);
-		break;
-	case 4:
-		PC->SetPlayerColor(EPlayerColor::Yellow);
-		break;
-	default:
-		PC->SetPlayerColor(EPlayerColor::Blue);
-		break;
+		switch (NumPlayers)
+		{
+		case 0:
+			PC->SetPlayerColor(EPlayerColor::Blue);
+			break;
+		case 1:
+			PC->SetPlayerColor(EPlayerColor::Beige);
+			break;
+		case 2:
+			PC->SetPlayerColor(EPlayerColor::Green);
+			break;
+		case 3:
+			PC->SetPlayerColor(EPlayerColor::Pink);
+			break;
+		case 4:
+			PC->SetPlayerColor(EPlayerColor::Yellow);
+			break;
+		default:
+			PC->SetPlayerColor(EPlayerColor::Blue);
+			break;
+		}
 	}
 	Super::PostLogin(InController);
 }

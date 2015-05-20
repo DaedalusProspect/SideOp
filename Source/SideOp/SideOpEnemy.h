@@ -2,25 +2,52 @@
 
 #pragma once
 
-#include "GameFramework/Pawn.h"
+#include "PaperCharacter.h"
+#include "PaperFlipbookComponent.h"
 #include "SideOpEnemy.generated.h"
 
 UCLASS()
-class SIDEOP_API ASideOpEnemy : public APawn
+class SIDEOP_API ASideOpEnemy : public APaperCharacter
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY(EditAnywhere, Category = "Behavior")
+	class UBehaviorTree* BotBehavior;
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "Stats")
-	float EnemyHP;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
+	class UPaperFlipbook* BaseAnimation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
+	class UPaperFlipbook* HitAnimation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
+	class UPaperFlipbook* DeathAnimation;
+
+	//
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Replicated, Transient)
+	class UPaperFlipbook* CurrentAnimation;
+
+	//
+
+
+
+	//
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	int32 XPToGive;
 
+	UPROPERTY(VisibleAnywhere, Transient, Replicated)
+	bool bIsDying;
+
+	UPROPERTY(VisibleAnywhere, Transient, Replicated)
+	bool bIsHit;
 public:
 	// Sets default values for this pawn's properties
-	ASideOpEnemy();
+	ASideOpEnemy(const FObjectInitializer& ObjectInitializer);
+
 
 	FORCEINLINE int32 GetXPToGive(){ return XPToGive; }
 

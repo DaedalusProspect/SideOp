@@ -2,15 +2,17 @@
 
 #include "SideOp.h"
 #include "SideOpCharacter.h"
-#include "SideOpPlayerController.h"
+#include "SideOpCharacterMovementComponent.h"
 #include "PaperFlipbookComponent.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // ASideOpCharacter
-
+// This constructor first sets our custom movement component
+// then sets up the rest of the character.
 
 ASideOpCharacter::ASideOpCharacter(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<USideOpCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	
 	GetSprite()->SetFlipbook(IdleAnimation); // Sets default idle animation
@@ -36,15 +38,29 @@ ASideOpCharacter::ASideOpCharacter(const FObjectInitializer& ObjectInitializer)
 	// Create a camera boom attached to the root (capsule)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->AttachTo(RootComponent);
-	CameraBoom->TargetArmLength = 300.0f;
-	CameraBoom->SocketOffset = FVector(0.0f, 0.0f, 75.0f);
+	CameraBoom->TargetArmLength = 500.0f;
+	CameraBoom->SocketOffset = FVector(0.0f, 0.0f, 45.0f);
 	CameraBoom->bAbsoluteRotation = true;
 	CameraBoom->RelativeRotation = FRotator(0.0f, -90.0f, 0.0f);
+
+	// The text for displaying our players name
+	PlayerNameComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("PlayerName"));
+	PlayerNameComponent->AttachTo(RootComponent);
+	PlayerNameComponent->SetText(FString("Player Name"));
+	PlayerNameComponent->HorizontalAlignment = EHorizTextAligment::EHTA_Center;
+	PlayerNameComponent->VerticalAlignment = EVerticalTextAligment::EVRTA_TextCenter;
+	PlayerNameComponent->RelativeRotation = FRotator(0.0f, 90.0f, 0.0f);
+	PlayerNameComponent->RelativeLocation = FVector(0.0f, 0.0f, 80.0f);
+	PlayerNameComponent->XScale = 1.5f;
+	PlayerNameComponent->YScale = 1.5f;
+	PlayerNameComponent->SetTextRenderColor(FColor::White);
+	PlayerNameComponent->SetIsReplicated(true);
+	PlayerNameComponent->bOwnerNoSee = true;
 
 	// Create an orthographic camera (no perspective) and attach it to the boom
 	SideViewCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("SideViewCamera"));
 	SideViewCameraComponent->ProjectionMode = ECameraProjectionMode::Orthographic;
-	SideViewCameraComponent->OrthoWidth = 2048.0f;
+	SideViewCameraComponent->OrthoWidth = 1860.0f;
 	SideViewCameraComponent->AttachTo(CameraBoom, USpringArmComponent::SocketName);
 
 	// Prevent all automatic rotation behavior on the camera, character, and camera component
@@ -73,6 +89,8 @@ ASideOpCharacter::ASideOpCharacter(const FObjectInitializer& ObjectInitializer)
 	bCanMove = true;
 	bCanJump = true;
 	bIsDying = false;
+	bIsSprinting = false;
+	SprintingModifier = 1.5f;
 }
 
 void ASideOpCharacter::Tick(float DeltaSeconds)
@@ -89,14 +107,16 @@ void ASideOpCharacter::BeginPlay()
 	// Configure character movement and physics based on the characters play class
 	// Normally, this is done in the constructor. However, we need special functionality
 	// To allow for physics changes on a per blutprint basis for the different player colors
-	GetCharacterMovement()->GravityScale = PlayerGravityScale * GravityModifier;
+	GetCharacterMovement()->GravityScale = PlayerGravityScale;
 	GetCharacterMovement()->AirControl = PlayerAirControl;
 	GetCharacterMovement()->JumpZVelocity = PlayerJumpZVelocity;
 	GetCharacterMovement()->GroundFriction = PlayerGroundFriction;
-	GetCharacterMovement()->MaxWalkSpeed = PlayerMaxWalkSpeed * RunSpeedModifier;
+	GetCharacterMovement()->MaxWalkSpeed = PlayerMaxWalkSpeed;
 	GetCharacterMovement()->MaxFlySpeed = PlayerMaxFlySpeed;
 	GetCharacterMovement()->Buoyancy = PlayerBouyancy;
-	
+
+	PlayerNameComponent->SetTextRenderColor(FColor::White);
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -147,6 +167,9 @@ void ASideOpCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 	InputComponent->BindAction("Jump", IE_Released, this, &ASideOpCharacter::StopJump);
 	InputComponent->BindAction("Duck", IE_Pressed, this, &ASideOpCharacter::Crouching);
 	InputComponent->BindAction("Duck", IE_Released, this, &ASideOpCharacter::StopCrouching);
+
+	InputComponent->BindAction("Sprint", IE_Pressed, this, &ASideOpCharacter::Sprint);
+	InputComponent->BindAction("Sprint", IE_Released, this, &ASideOpCharacter::StopSprint);
 	InputComponent->BindAxis("MoveRight", this, &ASideOpCharacter::MoveRight);
 	InputComponent->BindAxis("MoveUp", this, &ASideOpCharacter::MoveUp);
 
@@ -154,7 +177,7 @@ void ASideOpCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 	InputComponent->BindTouch(IE_Released, this, &ASideOpCharacter::TouchStopped);
 } 
 
-void ASideOpCharacter::MoveRight_Implementation(float Value)
+void ASideOpCharacter::MoveRight(float Value)
 {
 	// Update animation to match the motion
 	UpdateAnimation();
@@ -165,21 +188,25 @@ void ASideOpCharacter::MoveRight_Implementation(float Value)
 		if (Value < 0.0f)
 		{
 			Controller->SetControlRotation(FRotator(0.0, 180.0f, 0.0f));
+			PlayerNameComponent->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 		}
 		else if (Value > 0.0f)
 		{
 			Controller->SetControlRotation(FRotator(0.0f, 0.0f, 0.0f));
+			PlayerNameComponent->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 		}
 	}
 	// Make sure we can move
 	if (bCanMove)
 	{
 		// Apply the input to the character motion
+		// But apply more if we want to sprint
 		AddMovementInput(FVector(1.0f, 0.0f, 0.0f), Value);
+
 	}
 }
 
-void ASideOpCharacter::MoveUp_Implementation(float Value)
+void ASideOpCharacter::MoveUp(float Value)
 {
 	// Check if were swimming
 	if (GetCharacterMovement()->IsInWater())
@@ -216,7 +243,7 @@ void ASideOpCharacter::TouchStopped(const ETouchIndex::Type FingerIndex, const F
 
 }
 
-void ASideOpCharacter::OnJump_Implementation()
+void ASideOpCharacter::OnJump()
 {
 
 		// Then if we can jump (Cant while crouching)
@@ -226,13 +253,13 @@ void ASideOpCharacter::OnJump_Implementation()
 		}
 }
 
-void ASideOpCharacter::StopJump_Implementation()
+void ASideOpCharacter::StopJump()
 {
 
 		StopJumping();
 }
 
-void ASideOpCharacter::Crouching_Implementation()
+void ASideOpCharacter::Crouching()
 {
 	// See if were swimming first
 	if (GetCharacterMovement()->IsInWater())
@@ -253,18 +280,50 @@ void ASideOpCharacter::Crouching_Implementation()
 
 }
 
-void ASideOpCharacter::StopCrouching_Implementation()
+void ASideOpCharacter::StopCrouching()
 {
 	UnCrouch();
 	bCanMove = true;
 	bCanJump = true;
 }
 
+void ASideOpCharacter::Sprint()
+{
+	SetSprint(true);
+}
+
+void ASideOpCharacter::StopSprint()
+{
+	SetSprint(false);
+}
+
+void ASideOpCharacter::SetSprint(bool Sprint)
+{
+	bIsSprinting = Sprint;
+
+	if (Role < ROLE_Authority)
+	{
+		ServerSetSprint(Sprint);
+	}
+	GEngine->AddOnScreenDebugMessage(8, 1.0f, FColor::Magenta, TEXT("Called Sprint"));
+
+}
+
+void ASideOpCharacter::ServerSetSprint_Implementation(bool Sprint)
+{
+	SetSprint(Sprint);
+}
+
+bool ASideOpCharacter::ServerSetSprint_Validate(bool Sprint)
+{
+	return true;
+}
 
 void ASideOpCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	DOREPLIFETIME_CONDITION(ASideOpCharacter, bIsSprinting, COND_SkipOwner);
 }
 
 void ASideOpCharacter::AddCoin()
@@ -289,3 +348,13 @@ void ASideOpCharacter::OnDeath()
 		PC->Die();
 	}
 }
+
+////////////////////////////////////////////////
+
+void ASideOpCharacter::PossessedBy(class AController* InController)
+{
+	Super::PossessedBy(InController);
+
+}
+
+

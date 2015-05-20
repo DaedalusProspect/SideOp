@@ -1,10 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SideOp.h"
-#include "SideOpPlayerState.h"
 #include "SideOpPlayerController.h"
-#include "SideOpGameMode.h"
-#include "SideOpCharacter.h"
+
 
 
 ASideOpPlayerController::ASideOpPlayerController(const FObjectInitializer& ObjectInitializer)

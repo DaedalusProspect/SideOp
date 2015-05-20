@@ -26,9 +26,6 @@ class ASideOpCharacter : public APaperCharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
 
-	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	//class UBoxComponent* HeadBoxComp;
-
 	// allow updates every tick
 	virtual void Tick(float DeltaSeconds) override;
 
@@ -36,6 +33,10 @@ class ASideOpCharacter : public APaperCharacter
 	virtual void BeginPlay() override;
 
 protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Player)
+	class UTextRenderComponent* PlayerNameComponent;
+
 	// The animation to play while running around  - Blue Character / Default
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
 	class UPaperFlipbook* RunningAnimation;
@@ -64,46 +65,27 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
 	class UPaperFlipbook* ClimbAnimation;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Animations)
+	class UPaperFlipbook* FrontAnimation;
+
 	///////////////////////////////////////////////////////////////////////////
 
-	// The modifier for this class's run speed
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterClass)
-	float RunSpeedModifier;
-
-	// The modifier for this class's gravity
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterClass)
-	float GravityModifier;
+	float SprintingModifier;
 
 	////////////////////////////////////////////////////////////////////////////////
-
-	// Is the character swimming?
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
-	bool bIsSwimming;
-
-	// Is the character falling?
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
-	bool bIsFalling;
-
-	// Is the character running?
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
-	bool bIsRunning;
-
-	// Is the character climbing?
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
-	bool bIsClimbing;
 
 	// Was the character hit?
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
 	bool bIsHit;
 
+	// Are we sprinting
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Category = Player)
+	bool bIsSprinting;
+
 	// Is the character dying?
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
 	bool bIsDying;
-
-	////////////////////////////////////////////////////////////////////////
-	// Is this just a blank character?
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Character)
-	bool bIsBlank;
 
 	// Can we move?
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Character)
@@ -113,47 +95,58 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Character)
 	bool bCanJump;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Keys)
+	bool bHasBlueKey;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Keys)
+	bool bHasRedKey;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Keys)
+	bool bHasGreenKey;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Keys)
+	bool bHasYellowKey;
+
 	//////////////////////////////////////////////////////////////////////////
 
 	/** Called to choose the correct animation to play based on the character's movement state */
 	void UpdateAnimation();
 
-	//////////////////////////////////////////////////////////////////////////
+	// Called when the character is possessed
+	virtual void PossessedBy(class AController* InController) override;
 
 	//////////////////////////////////////////////////////////////////////////
 
 	/** Called for side to side input */
-	UFUNCTION(BlueprintNativeEvent)
 	void MoveRight(float Value);
-	void MoveRight_Implementation(float Value);
 
 	// Called when swimming up or down, or climbing up/down
-	UFUNCTION(BlueprintNativeEvent)
 	void MoveUp(float Value);
-	void MoveUp_Implementation(float Value);
 
 	// Called when crouching
-	UFUNCTION(BlueprintNativeEvent)
 	void Crouching();
-	void Crouching_Implementation();
 
 	// Stop crouching
-	UFUNCTION(BlueprintNativeEvent)
 	void StopCrouching();
-	void StopCrouching_Implementation();
-
 
 	// Handle Jumping so we can add extra utilities.
-	UFUNCTION(BlueprintNativeEvent)
 	void OnJump();
-	void OnJump_Implementation();
 
-	UFUNCTION(BlueprintNativeEvent)
 	void StopJump();
-	void StopJump_Implementation();
 
 	// Overrides Jump so we can have variable jump height
 	void Jump() override;
+
+	// Start our sprint logic
+	void Sprint();
+	void StopSprint();
+
+	void SetSprint(bool Sprint);
+
+	UFUNCTION(Reliable, Server, WithValidation)
+	void ServerSetSprint(bool Sprint);
+	void ServerSetSprint_Implementation(bool Sprint);
+	bool ServerSetSprint_Validate(bool Sprint);
 
 	/////////////////////////////////////////////////////////////////////////////
 
@@ -177,11 +170,6 @@ protected:
 
 	//////////////////////////////////////////////////////////////////////////////
 	// Networking functions
-	//UFUNCTION(Server, Reliable, WithValidation)
-	//void ServerRPCUpdateCoins(int32 Coins);
-	//virtual bool ServerRPCUpdateCoins_Validate(int32 Coins);
-	//virtual void ServerRPCUpdateCoins_Implementation(int32 Coins);
-
 	/////////////////////////////////////////////////////////////////////////////
 public:
 	ASideOpCharacter(const FObjectInitializer& ObjectInitializer);
@@ -189,10 +177,18 @@ public:
 	/** Returns SideViewCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetSideViewCameraComponent() const { return SideViewCameraComponent; }
 
+	// Get our PlayerName component for rendering the player name above their head
+	FORCEINLINE class UTextRenderComponent* GetPlayerNameComponent() const { return PlayerNameComponent; }
+
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
-	//FORCEINLINE int32 GetCoinsCollected(){ return CoinsCollected; }
+	FORCEINLINE float GetSprintingModifier() const { return SprintingModifier; }
+
+	FORCEINLINE bool IsSprinting() const { return bIsSprinting; }
+
+	FORCEINLINE bool IsDead() const { return bIsDying; }
+
 	FORCEINLINE void SetMovement(bool CanMove){ bCanMove = CanMove; }
 
 	////////////////////////////////////
@@ -225,10 +221,6 @@ public:
 	// Called to add a coin to our characters score
 	UFUNCTION(BlueprintCallable, Category = "Coins")
 	void AddCoin();
-
-	// What to do when the character is dying
-	//UFUNCTION(BlueprintCallable, Category = Character)
-	//void Dying();
 
 	UFUNCTION(BlueprintCallable, Category = Character)
 	void OnDeath();
