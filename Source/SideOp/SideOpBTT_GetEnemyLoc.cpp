@@ -29,6 +29,7 @@ EBTNodeResult::Type USideOpBTT_GetEnemyLoc::ExecuteTask(UBehaviorTreeComponent& 
 		if (Loc != FVector::ZeroVector)
 		{
 			OwnerComp.GetBlackboardComponent()->SetValue<UBlackboardKeyType_Vector>(BlackboardKey.GetSelectedKeyID(), Loc);
+			GEngine->AddOnScreenDebugMessage(1, 5.0, FColor::Red, TEXT("Node Succeeded"));
 			return EBTNodeResult::Succeeded;
 		}
 	}

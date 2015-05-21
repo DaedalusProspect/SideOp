@@ -38,15 +38,22 @@ public:
 
 	// Set the blackboard key and our AI to this enemy
 	void SetEnemy(class APawn* InPawn); 
+	void ClearEnemy();
 
 	// Get the enemy
-	class ASideOpCharacter* GetEnemy() const; 
+	class ASideOpCharacter* GetEnemy() const;
+	FVector GetHome() const;
+
+	UFUNCTION(BlueprintCallable, Category="AI")
+	void SetPatrolLocation(FVector Location);
 
 protected:
 
 	// Holds the id to the blackboard key we need
 	int32 EnemyKeyID; 
+	int32 EnemyLocKeyID;
 	int32 HomeKeyID;
+	int32 PatrolKeyID;
 
 public:
 

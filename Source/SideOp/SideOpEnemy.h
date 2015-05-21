@@ -32,10 +32,6 @@ protected:
 
 	//
 
-
-
-	//
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	int32 XPToGive;
 
@@ -44,6 +40,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Transient, Replicated)
 	bool bIsHit;
+
 public:
 	// Sets default values for this pawn's properties
 	ASideOpEnemy(const FObjectInitializer& ObjectInitializer);
@@ -61,5 +58,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
+
+	// For setting a patrol location
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", Meta = (MakeEditWidget = true))
+	FVector PatrolLocation;
 	
 };
