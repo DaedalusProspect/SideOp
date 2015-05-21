@@ -17,7 +17,7 @@ ASideOpAIController::ASideOpAIController(const FObjectInitializer& ObjectInitial
 	// Setup the behavior tree component
 	BrainComponent = BehaviorComp = ObjectInitializer.CreateDefaultSubobject<UBehaviorTreeComponent>(this, "BehaviorComp");
 
-
+	
 }
 
 // Start all of our AI when we possess our pawn
@@ -86,6 +86,16 @@ FVector ASideOpAIController::GetHome() const
 	return FVector::ZeroVector;
 }
 
+FVector ASideOpAIController::GetPatrol() const
+{
+	if (BlackboardComp)
+	{
+		return BlackboardComp->GetValue<UBlackboardKeyType_Vector>(PatrolKeyID);
+	}
+
+	return FVector::ZeroVector;
+}
+
 void ASideOpAIController::ClearEnemy()
 {
 	BlackboardComp->ClearValue(EnemyKeyID);
@@ -114,23 +124,29 @@ void ASideOpAIController::FindClosestEnemy()
 	}
 
 	const FVector MyLoc = MyBot->GetActorLocation();
-	const FVector HomeLoc = GetHome();
 	float BestDistSq = MAX_FLT;
+	float NestRadius = Cast<ASideOpEnemy>(MyBot)->NestRadius;
 	ASideOpCharacter* BestPawn = NULL;
 
+	const FVector PatrolAmount = Cast<ASideOpEnemy>(MyBot)->PatrolLocation;
 
+	const FVector NestLoc = GetHome() + (PatrolAmount / 2);
 	// This will get all of our pawns and iterate through them, 
 	// then check if its one of our characters and that its alive. If so, it will get the sqr distance
 	// if its within the best sqdist then it will set that as the enemy
 	for (FConstPawnIterator It = GetWorld()->GetPawnIterator(); It; ++It)
 	{
+		// This gets the enemy based on a certain distance from the enemy's "Nest"
+		// Which is basically the middle of its patrol location and its home location
+		//TODO: Clean this and make more dynamic
+		GEngine->AddOnScreenDebugMessage(126, 5.0, FColor::Red, NestLoc.ToString());
 		GEngine->AddOnScreenDebugMessage(12, 5.0, FColor::Red, TEXT("Looking For Enemy"));
 		ASideOpCharacter* TestPawn = Cast<ASideOpCharacter>(*It);
 		if (TestPawn && !TestPawn->IsDead())
 		{
 			GEngine->AddOnScreenDebugMessage(123, 5.0, FColor::Red, TEXT("Got a Pawn"));
-			const float DistSq = (TestPawn->GetActorLocation() - HomeLoc).SizeSquared();
-			if (DistSq < BestDistSq && DistSq < 1000000.0f)
+			const float DistSq = (TestPawn->GetActorLocation() - NestLoc).SizeSquared();
+			if (DistSq < BestDistSq && DistSq < NestRadius)
 			{
 				BestDistSq = DistSq;
 				BestPawn = TestPawn;

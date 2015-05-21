@@ -28,7 +28,6 @@ ASideOpEnemy::ASideOpEnemy(const FObjectInitializer& ObjectInitializer)
 	// Lock character motion onto the XZ plane, so the character can't move in or out of the screen
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->SetPlaneConstraintNormal(FVector(0.0f, -1.0f, 0.0f));
-	
 
 }
 

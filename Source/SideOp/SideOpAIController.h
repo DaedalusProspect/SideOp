@@ -43,6 +43,7 @@ public:
 	// Get the enemy
 	class ASideOpCharacter* GetEnemy() const;
 	FVector GetHome() const;
+	FVector GetPatrol() const;
 
 	UFUNCTION(BlueprintCallable, Category="AI")
 	void SetPatrolLocation(FVector Location);

@@ -62,5 +62,8 @@ public:
 	// For setting a patrol location
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", Meta = (MakeEditWidget = true))
 	FVector PatrolLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	float NestRadius;
 	
 };
