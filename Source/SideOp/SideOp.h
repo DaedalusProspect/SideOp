@@ -8,10 +8,7 @@
 // Place any includes here that are needed by the majority of your .cpp files
 
 #include "EngineMinimal.h"
-#include "SideOpPlayerState.h"
-#include "SideOpCharacter.h"
-#include "SideOpPlayerController.h"
-#include "SideOpGameMode.h"
+#include "SideOpClasses.h"
 #include "Runtime/UMG/Public/UMG.h"
 #include "Runtime/UMG/Public/UMGStyle.h"
 #include "Runtime/UMG/Public/Slate/SObjectWidget.h"
