@@ -86,6 +86,7 @@ public:
 	void AddLives(int32 Lives);
 
 	// Add experience to our player
+	UFUNCTION(BlueprintCallable, Category = "SideOp Gameplay")
 	void AddXP(int32 XP);
 
 	// Let our stamina recharge over time
