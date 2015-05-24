@@ -124,12 +124,21 @@ void ASideOpAIController::FindClosestEnemy()
 
 	const FVector MyLoc = MyBot->GetActorLocation();
 	float BestDistSq = MAX_FLT;
-	float NestRadius = Cast<ASideOpEnemy>(MyBot)->NestRadius;
+	float ChaseRadius = Cast<ASideOpEnemy>(MyBot)->ChaseRadius;
 	ASideOpCharacter* BestPawn = NULL;
-
 	const FVector PatrolAmount = Cast<ASideOpEnemy>(MyBot)->PatrolLocation;
-
 	const FVector NestLoc = GetHome() + (PatrolAmount / 2);
+	const float NestRadius = ((GetHome() + PatrolAmount) - NestLoc).SizeSquared();
+	float  DefendRadius = MAX_FLT;
+
+	if (Cast<ASideOpEnemy>(MyBot)->bDriveAway)
+	{
+		DefendRadius = ChaseRadius;
+	}
+	else
+	{
+		DefendRadius = NestRadius;
+	}
 	// This will get all of our pawns and iterate through them, 
 	// then check if its one of our characters and that its alive. If so, it will get the sqr distance
 	// if its within the best sqdist then it will set that as the enemy
@@ -145,7 +154,7 @@ void ASideOpAIController::FindClosestEnemy()
 		{
 			GEngine->AddOnScreenDebugMessage(123, 5.0, FColor::Red, TEXT("Got a Pawn"));
 			const float DistSq = (TestPawn->GetActorLocation() - NestLoc).SizeSquared();
-			if (DistSq < BestDistSq && DistSq < NestRadius)
+			if (DistSq < BestDistSq && DistSq < DefendRadius)
 			{
 				BestDistSq = DistSq;
 				BestPawn = TestPawn;
