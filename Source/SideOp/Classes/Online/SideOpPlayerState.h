@@ -28,13 +28,13 @@ class SIDEOP_API ASideOpPlayerState : public APlayerState
 
 	// This determines what color to use for our pawn eventually will have character select
 	// @param PlayerChoice will eventually be what color the player selects.
-	void DeterminePawnClass(EPlayerColor PlayerChoice);
+	void DeterminePawnClass(EPlayerColor::Color PlayerChoice);
 	
 protected:
 
 	// Our player's color. For character purposes
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Transient, Replicated)
-	EPlayerColor PlayerColor;
+	TEnumAsByte<EPlayerColor::Color>  PlayerColor;
 
 	// How many lives he currently has
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Transient, Replicated)
@@ -48,12 +48,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Transient)
 	int32 CurrentXP;
 
-	// The players current amount of level completion
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Transient, Replicated)
-	float LevelCompletion;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Transient)
 	float XPPercent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Transient, Replicated)
+	float LevelCompletion;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Transient)
 	float Stamina;
@@ -67,15 +66,20 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 	bool bIsSprinting;
 
+	bool bHaveZones;
+	FVector FinishLocation;
+	FVector StartLocation;
 	/////////////////////
 
 public:
 
 	ASideOpPlayerState(const FObjectInitializer& ObjectInitializer);
 
+
 	// Getters for all of our player data
 	FORCEINLINE int32 GetPlayerLives(){ return PlayerLives; }
 	FORCEINLINE int32 GetPlayerLevel(){ return PlayerLevel; }
+	FORCEINLINE EPlayerColor::Color GetPlayerColor(){ return PlayerColor; }
 	FORCEINLINE int32 GetCurrentXP(){ return CurrentXP; }
 	FORCEINLINE float GetCompletionPercent(){ return LevelCompletion; }
 	FORCEINLINE bool DidPlayerQuit(){ return bPlayerQuit; }
@@ -101,6 +105,8 @@ public:
 	// Functions to call when getting a kill or being killed
 	void ScoreKill(class ASideOpPlayerState* Victim, int32 XP);
 	void ScoreDeath(class ASideOpPlayerState* KilledBy, int32 XP);
+
+	void UpdatePosition(FVector Position);
 
 	// Returns the short name of our player so it fits in the right places
 	FString GetShortName() const;

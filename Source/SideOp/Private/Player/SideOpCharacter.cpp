@@ -195,12 +195,17 @@ void ASideOpCharacter::MoveRight(float Value)
 		}
 	}
 	// Make sure we can move
+	ASideOpPlayerState* PS = Cast<ASideOpPlayerState>(PlayerState);
 	if (bCanMove)
 	{
 		// Apply the input to the character motion
 		// But apply more if we want to sprint
 		AddMovementInput(FVector(1.0f, 0.0f, 0.0f), Value);
-
+		if (PS)
+		{
+			PS->UpdatePosition(GetActorLocation());
+		}
+		
 	}
 }
 

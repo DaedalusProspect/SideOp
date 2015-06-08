@@ -10,15 +10,18 @@
  *
  */
 UENUM(BlueprintType)
-enum class EPlayerColor : uint8
+namespace EPlayerColor
 {
-	Blue,
-	Beige,
-	Green,
-	Pink,
-	Yellow,
-	Unset
-};
+	enum Color
+	{
+		Blue,
+		Beige,
+		Green,
+		Pink,
+		Yellow,
+		Unset
+	};
+}
 
 /**
  * 
@@ -36,7 +39,7 @@ protected:
 
 	// We need to keep track of our player color for the HUD, as well as for respawns
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Category = Player)
-	EPlayerColor PlayerColor;
+	TEnumAsByte<EPlayerColor::Color> PlayerColor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Player)
 	int32 PlayerLives;
@@ -86,9 +89,9 @@ public:
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	FORCEINLINE UClass* GetPlayerPawnClass(){ return PlayerPawn; }
-	FORCEINLINE EPlayerColor GetPlayerColor(){ return PlayerColor; }
+	FORCEINLINE EPlayerColor::Color GetPlayerColor(){ return PlayerColor; }
 
-	FORCEINLINE void SetPlayerColor(EPlayerColor Color){ PlayerColor = Color; }
+	FORCEINLINE void SetPlayerColor(EPlayerColor::Color Color){ PlayerColor = Color; }
 
 	// Called to add a coin to our characters score
 	UFUNCTION(BlueprintCallable, Category = "Coins")

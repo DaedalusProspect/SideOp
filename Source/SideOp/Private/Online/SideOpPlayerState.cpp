@@ -17,6 +17,7 @@ ASideOpPlayerState::ASideOpPlayerState(const FObjectInitializer& ObjectInitializ
 	LevelCompletion = 100.0f;
 	bPlayerQuit = false;
 	XPPercent = 0.0f;
+	bHaveZones = false;
 
 }
 
@@ -118,4 +119,50 @@ void ASideOpPlayerState::CopyProperties(class APlayerState* PlayerState)
 		SideOpState->PlayerColor = PlayerColor;
 	}
 
+}
+
+void ASideOpPlayerState::UpdatePosition(FVector Position)
+{
+	if (!bHaveZones)
+	{
+		for (TActorIterator<ASideOpFinishZone> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+		{
+			if (ActorItr)
+			{
+				if (ActorItr->GetActorLocation() != FVector::ZeroVector)
+				{
+					FinishLocation = ActorItr->GetActorLocation();
+					break;
+				}
+
+			}
+		}
+
+		for (TActorIterator<ASideOpStartZone> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+		{
+			if (ActorItr)
+			{
+				if (ActorItr->GetActorLocation() != FVector::ZeroVector)
+				{
+					StartLocation = ActorItr->GetActorLocation();
+					break;
+				}
+
+			}
+		}
+
+		if (StartLocation != FVector::ZeroVector  && FinishLocation != FVector::ZeroVector)
+		{
+			bHaveZones = true;
+		}
+
+
+	}
+	if (Position != FVector::ZeroVector) // Make sure we got a good position
+	{
+		float CourseLength = FVector::Dist(StartLocation,FinishLocation);
+		float PlayerDist = FVector::Dist(Position, FinishLocation);
+
+		LevelCompletion = PlayerDist / CourseLength;
+	}
 }
