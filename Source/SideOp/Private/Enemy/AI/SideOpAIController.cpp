@@ -34,6 +34,10 @@ void ASideOpAIController::Possess(class APawn* InPawn)
 			BlackboardComp->InitializeBlackboard(*Bot->BotBehavior->BlackboardAsset);
 		}
 
+		if (Bot->PatrolLocation == FVector::ZeroVector)
+		{
+			GEngine->AddOnScreenDebugMessage(1211, 15.0, FColor::Red, TEXT("NoPatrolLocation!!"));
+		}
 		EnemyKeyID = BlackboardComp->GetKeyID("Enemy");
 		EnemyLocKeyID = BlackboardComp->GetKeyID("EnemyLoc");
 		HomeKeyID = BlackboardComp->GetKeyID("Home");
@@ -60,7 +64,7 @@ void ASideOpAIController::SetEnemy(class APawn* InPawn)
 	if (BlackboardComp)
 	{
 		BlackboardComp->SetValue<UBlackboardKeyType_Object>(EnemyKeyID, InPawn);
-		BlackboardComp->SetValue<UBlackboardKeyType_Vector>(EnemyKeyID, InPawn->GetActorLocation());
+		BlackboardComp->SetValue<UBlackboardKeyType_Vector>(EnemyLocKeyID, InPawn->GetActorLocation());
 	}
 }
 
@@ -98,6 +102,7 @@ FVector ASideOpAIController::GetPatrol() const
 void ASideOpAIController::ClearEnemy()
 {
 	BlackboardComp->ClearValue(EnemyKeyID);
+	BlackboardComp->ClearValue(EnemyLocKeyID);
 }
 
 void ASideOpAIController::SetPatrolLocation(FVector Location)

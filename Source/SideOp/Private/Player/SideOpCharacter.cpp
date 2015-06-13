@@ -25,7 +25,7 @@ ASideOpCharacter::ASideOpCharacter(const FObjectInitializer& ObjectInitializer)
 	GetCapsuleComponent()->SetCapsuleHalfHeight(56.0f);
 	GetCapsuleComponent()->SetCapsuleRadius(40.0f);
 	GetCapsuleComponent()->CanCharacterStepUpOn = ECB_Yes;
-
+	GetCapsuleComponent()->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
 	// Setup the head collision box (Only players collide with this)
 	//HeadBoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("HeadCollisionBox"));
 	//HeadBoxComp->AttachTo(RootComponent);
@@ -44,7 +44,7 @@ ASideOpCharacter::ASideOpCharacter(const FObjectInitializer& ObjectInitializer)
 	// The text for displaying our players name
 	PlayerNameComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("PlayerName"));
 	PlayerNameComponent->AttachTo(RootComponent);
-	PlayerNameComponent->SetText(FString("Player Name"));
+	PlayerNameComponent->SetText(FText::FromString("Player Name"));
 	PlayerNameComponent->HorizontalAlignment = EHorizTextAligment::EHTA_Center;
 	PlayerNameComponent->VerticalAlignment = EVerticalTextAligment::EVRTA_TextCenter;
 	PlayerNameComponent->RelativeRotation = FRotator(0.0f, 90.0f, 0.0f);

@@ -14,7 +14,7 @@ class ASideOpGameMode : public AGameMode
 {
 	GENERATED_BODY()
 
-	UClass* GetDefaultPawnClassForController(AController* InController) override;
+	UClass* GetDefaultPawnClassForController_Implementation(AController* InController) override;
 
 protected:
 	// The Max Level for our players

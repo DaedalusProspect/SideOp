@@ -59,7 +59,7 @@ void ASideOpGameMode::PostLogin(APlayerController* InController)
 }
 
 
-UClass* ASideOpGameMode::GetDefaultPawnClassForController(AController* InController)
+UClass* ASideOpGameMode::GetDefaultPawnClassForController_Implementation(AController* InController)
 {
 	ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(InController);
 	if (PC)
