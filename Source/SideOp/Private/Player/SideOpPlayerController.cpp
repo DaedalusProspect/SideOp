@@ -106,25 +106,20 @@ void ASideOpPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimePropert
 // Will most likely be split into multiple step functions
 void ASideOpPlayerController::Die_Implementation()
 {
-	//##########################################
-	// This should be done in the player/gamestate
-	//##########################################
-		if (PlayerLives > 0) // This is very simple right now. Just checks if we have lives and if we do, respawns us at start
+	ASideOpPlayerState* PS = Cast<ASideOpPlayerState>(PlayerState);
+	if (PS)
+	{
+		if (PS->OnDeath()) // This is very simple right now. Just checks if we have lives and if we do, respawns us at start
 		{
-			PlayerLives--;
-
-			MessageText = TEXT("You have died!");
-			GetWorld()->GetTimerManager().SetTimer(TimerHandler, this, &ASideOpPlayerController::ClearMessage, 2.0f);
-			
+			GetWorld()->GetTimerManager().SetTimer(TimerHandler, this, &ASideOpPlayerController::DeathTimer, 2.0f);
 			return;
 		}
 		else
 		{
 			// Game Over
-			MessageText = TEXT("GameOver");
 			return;
 		}
-	//#############################################
+	}
 }
 
 // Functionality when adding a coin. This will mostly likely be morphed into adding xp
@@ -138,7 +133,7 @@ void ASideOpPlayerController::AddCoin()
 	}
 }
 
-void ASideOpPlayerController::ClearMessage()
+void ASideOpPlayerController::DeathTimer()
 {
 	MessageText = TEXT("");
 	// For testing purposes, just clear the timer

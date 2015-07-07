@@ -102,9 +102,16 @@ public:
 	// Level up the player
 	void OnLevelUp();
 
+	// Handle a death
+	bool OnDeath();
+
 	// Functions to call when getting a kill or being killed
 	void ScoreKill(class ASideOpPlayerState* Victim, int32 XP);
 	void ScoreDeath(class ASideOpPlayerState* KilledBy, int32 XP);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void Die();
+	void Die_Implementation();
 
 	void UpdatePosition(FVector Position);
 

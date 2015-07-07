@@ -127,13 +127,15 @@ void ASideOpAIController::FindClosestEnemy()
 		return;
 	}
 
-	const FVector MyLoc = MyBot->GetActorLocation();
 	float BestDistSq = MAX_FLT;
 	float ChaseRadius = Cast<ASideOpEnemy>(MyBot)->ChaseRadius;
 	ASideOpCharacter* BestPawn = NULL;
+
 	const FVector PatrolAmount = Cast<ASideOpEnemy>(MyBot)->PatrolLocation;
+
 	const FVector NestLoc = GetHome() + (PatrolAmount / 2);
 	const float NestRadius = ((GetHome() + PatrolAmount) - NestLoc).SizeSquared();
+
 	float  DefendRadius = MAX_FLT;
 
 	if (Cast<ASideOpEnemy>(MyBot)->bDriveAway)
@@ -152,19 +154,19 @@ void ASideOpAIController::FindClosestEnemy()
 		// This gets the enemy based on a certain distance from the enemy's "Nest"
 		// Which is basically the middle of its patrol location and its home location
 		//TODO: Clean this and make more dynamic
-		GEngine->AddOnScreenDebugMessage(126, 5.0, FColor::Red, NestLoc.ToString());
-		GEngine->AddOnScreenDebugMessage(12, 5.0, FColor::Red, TEXT("Looking For Enemy"));
+		//GEngine->AddOnScreenDebugMessage(126, 5.0, FColor::Red, NestLoc.ToString());
+		//GEngine->AddOnScreenDebugMessage(12, 5.0, FColor::Red, TEXT("Looking For Enemy"));
 		ASideOpCharacter* TestPawn = Cast<ASideOpCharacter>(*It);
 		if (TestPawn && !TestPawn->IsDead())
 		{
-			GEngine->AddOnScreenDebugMessage(123, 5.0, FColor::Red, TEXT("Got a Pawn"));
+			//GEngine->AddOnScreenDebugMessage(123, 5.0, FColor::Red, TEXT("Got a Pawn"));
 			const float DistSq = (TestPawn->GetActorLocation() - NestLoc).SizeSquared();
 			if (DistSq < BestDistSq && DistSq < DefendRadius)
 			{
 				BestDistSq = DistSq;
 				BestPawn = TestPawn;
 				FString Distance = FString::SanitizeFloat(BestDistSq);
-				GEngine->AddOnScreenDebugMessage(1233, 5.0, FColor::Red, *Distance);
+				//GEngine->AddOnScreenDebugMessage(1233, 5.0, FColor::Red, *Distance);
 			}
 
 		}
@@ -175,12 +177,12 @@ void ASideOpAIController::FindClosestEnemy()
 	if (BestPawn)
 	{
 		SetEnemy(BestPawn);
-		GEngine->AddOnScreenDebugMessage(13, 5.0, FColor::Red, TEXT("FoundEnemy"));
+		//GEngine->AddOnScreenDebugMessage(13, 5.0, FColor::Red, TEXT("FoundEnemy"));
 	}
 	else
 	{
 		// Unset the BlackBoard
 		ClearEnemy();
-		GEngine->AddOnScreenDebugMessage(14, 5.0, FColor::Red, TEXT("NoEnemy"));
+		//GEngine->AddOnScreenDebugMessage(14, 5.0, FColor::Red, TEXT("NoEnemy"));
 	}
 }

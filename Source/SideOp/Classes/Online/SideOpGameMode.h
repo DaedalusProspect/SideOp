@@ -42,5 +42,6 @@ public:
 
 	virtual void BeginPlay() override;
 	virtual void PostLogin(APlayerController* InController) override;
-
+	//virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
+	void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const;
 };

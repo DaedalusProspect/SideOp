@@ -90,8 +90,8 @@ void ASideOpPlayerState::OnLevelUp()
 
 	PlayerLevel++;
 	int32 XPNeeded = PlayerLevel * 118;
-	//int32 RemainingXP = CurrentXP - XPNeeded;
-	CurrentXP = 0;
+	int32 RemainingXP = CurrentXP - XPNeeded;
+	CurrentXP = RemainingXP;
 	XPPercent = CurrentXP / XPNeeded;
 
 }
@@ -165,4 +165,40 @@ void ASideOpPlayerState::UpdatePosition(FVector Position)
 
 		LevelCompletion = PlayerDist / CourseLength;
 	}
+}
+
+void ASideOpPlayerState::Die_Implementation()
+{
+	//##########################################
+	// This should be done in the player/gamestate
+	//##########################################
+	if (PlayerLives > 0) // This is very simple right now. Just checks if we have lives and if we do, respawns us at start
+	{
+		PlayerLives--;
+
+		//MessageText = TEXT("You have died!");
+		//GetWorld()->GetTimerManager().SetTimer(TimerHandler, this, &ASideOpPlayerController::ClearMessage, 2.0f);
+
+		return;
+	}
+	else
+	{
+		// Game Over
+		//MessageText = TEXT("GameOver");
+		return;
+	}
+	//#############################################
+}
+
+bool ASideOpPlayerState::OnDeath()
+{
+	// Check for no lives left
+	if (PlayerLives <= 0)
+	{
+		return false;
+	}
+
+	// Otherwise were still good and just need to subtract a life
+	PlayerLives--;
+	return true;
 }

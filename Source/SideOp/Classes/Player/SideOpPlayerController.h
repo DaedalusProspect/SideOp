@@ -102,7 +102,7 @@ public:
 	void Die_Implementation();
 
 	UFUNCTION(BlueprintCallable, Category = Message)
-	void ClearMessage();
+	void DeathTimer();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Message)
 	FString MessageText;

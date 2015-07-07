@@ -72,6 +72,33 @@ UClass* ASideOpGameMode::GetDefaultPawnClassForController_Implementation(AContro
 	return DefaultPawnClass;
 }
 
+/*
+AActor* ASideOpGameMode::ChoosePlayerStart_Implementation(AController* Player)
+{
+	ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(Player);
+	if (PC)
+	{
+		// Iterate through the starts and find the one with the tag that matches the player
+		for (TActorIterator<ASideOpPlayerStart> It(GetWorld()); It;)
+		{
+			ASideOpPlayerStart* PS = Cast<ASideOpPlayerStart>(It->GetClass());
+			if (PS)
+			{
+				if (PC->GetPlayerColor() == PS->GetStartColor())
+				{
+					return PS;
+				}
+			}
+		}
+	}
+	else
+	{
+		Super::ChoosePlayerStart_Implementation(Player);
+		return nullptr;
+	}
+	return nullptr;
+} */
+
 void ASideOpGameMode::SeedXPTable(int32 Seed)
 {
 	for (int i = 0; i < MaxLevel; i++)
@@ -86,4 +113,9 @@ int32 ASideOpGameMode::GetXPToLevel(int32 CurrentLevel)
 {
 	int32 NextLevel = CurrentLevel + 1;
 	return XPToLevel[NextLevel];
+}
+
+void ASideOpGameMode::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
