@@ -28,30 +28,29 @@ void ASideOpGameMode::BeginPlay()
 
 void ASideOpGameMode::PostLogin(APlayerController* InController)
 {
-	ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(InController);
-
+	ASideOpPlayerState* PS = Cast<ASideOpPlayerState>(InController->PlayerState);
 	// Set our player color based on this controllers player num
-	if (PC)
+	if (PS)
 	{
 		switch (NumPlayers)
 		{
 		case 0:
-			PC->SetPlayerColor(EPlayerColor::Blue);
+			PS->SetPlayerColor(EPlayerColor::Blue);
 			break;
 		case 1:
-			PC->SetPlayerColor(EPlayerColor::Beige);
+			PS->SetPlayerColor(EPlayerColor::Beige);
 			break;
 		case 2:
-			PC->SetPlayerColor(EPlayerColor::Green);
+			PS->SetPlayerColor(EPlayerColor::Green);
 			break;
 		case 3:
-			PC->SetPlayerColor(EPlayerColor::Pink);
+			PS->SetPlayerColor(EPlayerColor::Pink);
 			break;
 		case 4:
-			PC->SetPlayerColor(EPlayerColor::Yellow);
+			PS->SetPlayerColor(EPlayerColor::Yellow);
 			break;
 		default:
-			PC->SetPlayerColor(EPlayerColor::Blue);
+			PS->SetPlayerColor(EPlayerColor::Blue);
 			break;
 		}
 	}
@@ -72,16 +71,16 @@ UClass* ASideOpGameMode::GetDefaultPawnClassForController_Implementation(AContro
 	return DefaultPawnClass;
 }
 
-/*
+
 AActor* ASideOpGameMode::ChoosePlayerStart_Implementation(AController* Player)
 {
 	ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(Player);
 	if (PC)
 	{
 		// Iterate through the starts and find the one with the tag that matches the player
-		for (TActorIterator<ASideOpPlayerStart> It(GetWorld()); It;)
+		for (TActorIterator<ASideOpPlayerStart> It(GetWorld()); It; ++It)
 		{
-			ASideOpPlayerStart* PS = Cast<ASideOpPlayerStart>(It->GetClass());
+			ASideOpPlayerStart* PS = Cast<ASideOpPlayerStart>(It->StaticClass());
 			if (PS)
 			{
 				if (PC->GetPlayerColor() == PS->GetStartColor())
@@ -93,11 +92,10 @@ AActor* ASideOpGameMode::ChoosePlayerStart_Implementation(AController* Player)
 	}
 	else
 	{
-		Super::ChoosePlayerStart_Implementation(Player);
-		return nullptr;
+		return Super::ChoosePlayerStart_Implementation(Player);
 	}
-	return nullptr;
-} */
+	 return Super::ChoosePlayerStart_Implementation(Player);
+} 
 
 void ASideOpGameMode::SeedXPTable(int32 Seed)
 {

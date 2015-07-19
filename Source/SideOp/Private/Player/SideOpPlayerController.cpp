@@ -44,36 +44,40 @@ void ASideOpPlayerController::DeterminePawnClass_Implementation()
 {
 	if (IsLocalController()) // Only do this on the local controller
 	{
-		// Now check if we already have a color, and if we do, set our player pawn
-		if (PlayerColor == EPlayerColor::Unset)
+		ASideOpPlayerState* PS = Cast<ASideOpPlayerState>(PlayerState);
+		if (PS)
 		{
-			// Our player color will be determined in ASideOpGameMode::PostLogin()
-		}
-		else
-		{
-			switch (PlayerColor)
+			// Now check if we already have a color, and if we do, set our player pawn
+			if (PS->GetPlayerColor() == EPlayerColor::Unset)
 			{
-			case EPlayerColor::Blue:
-				 PlayerPawn = BluePlayer;
-				 break;
-			case EPlayerColor::Beige:
-				PlayerPawn = BeigePlayer;
-				break;
-			case EPlayerColor::Green:
-				PlayerPawn = GreenPlayer;
-				break;
-			case EPlayerColor::Pink:
-				PlayerPawn = PinkPlayer;
-				break;
-			case EPlayerColor::Yellow:
-				PlayerPawn = YellowPlayer;
-				break;
-			default:
-				PlayerPawn = BluePlayer;
-				break;
+				// Our player color will be determined in ASideOpGameMode::PostLogin()
 			}
+			else
+			{
+				switch (PS->GetPlayerColor())
+				{
+				case EPlayerColor::Blue:
+					PlayerPawn = BluePlayer;
+					break;
+				case EPlayerColor::Beige:
+					PlayerPawn = BeigePlayer;
+					break;
+				case EPlayerColor::Green:
+					PlayerPawn = GreenPlayer;
+					break;
+				case EPlayerColor::Pink:
+					PlayerPawn = PinkPlayer;
+					break;
+				case EPlayerColor::Yellow:
+					PlayerPawn = YellowPlayer;
+					break;
+				default:
+					PlayerPawn = BluePlayer;
+					break;
+				}
+			}
+			ServerRPCSetPawn(PlayerPawn);
 		}
-		ServerRPCSetPawn(PlayerPawn);
 		return;
 	}
 }
@@ -109,7 +113,7 @@ void ASideOpPlayerController::Die_Implementation()
 	ASideOpPlayerState* PS = Cast<ASideOpPlayerState>(PlayerState);
 	if (PS)
 	{
-		if (PS->OnDeath()) // This is very simple right now. Just checks if we have lives and if we do, respawns us at start
+		if (PS->GetPlayerLives() > 0) // This is very simple right now. Just checks if we have lives and if we do, respawns us at start
 		{
 			GetWorld()->GetTimerManager().SetTimer(TimerHandler, this, &ASideOpPlayerController::DeathTimer, 2.0f);
 			return;
@@ -135,7 +139,7 @@ void ASideOpPlayerController::AddCoin()
 
 void ASideOpPlayerController::DeathTimer()
 {
-	MessageText = TEXT("");
+	//MessageText = TEXT("");
 	// For testing purposes, just clear the timer
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandler);
 
@@ -143,6 +147,12 @@ void ASideOpPlayerController::DeathTimer()
 	if (OurChar)
 	{
 		OurChar->Destroy();
+	}
+
+	ASideOpPlayerState* PS = Cast<ASideOpPlayerState>(PlayerState);
+	if (PS)
+	{
+		PS->OnDeath();
 	}
 
 	ServerRestartPlayer();

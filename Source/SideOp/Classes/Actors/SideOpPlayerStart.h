@@ -15,15 +15,14 @@ class SIDEOP_API ASideOpPlayerStart : public APlayerStart
 	GENERATED_BODY()
 	
 protected:
-
-
-	
-public:
-
 	// This start zones color
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Transient, Replicated)
 	TEnumAsByte<EPlayerColor::Color>  StartColor;
+	
+public:
 
+
+	FORCEINLINE TEnumAsByte<EPlayerColor::Color> const GetStartColor(){ return StartColor; }
 
 	void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const;
 };

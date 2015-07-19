@@ -91,7 +91,7 @@ void ASideOpPlayerState::OnLevelUp()
 	PlayerLevel++;
 	int32 XPNeeded = PlayerLevel * 118;
 	int32 RemainingXP = CurrentXP - XPNeeded;
-	CurrentXP = RemainingXP;
+	CurrentXP = 0;
 	XPPercent = CurrentXP / XPNeeded;
 
 }
@@ -167,6 +167,7 @@ void ASideOpPlayerState::UpdatePosition(FVector Position)
 	}
 }
 
+/*
 void ASideOpPlayerState::Die_Implementation()
 {
 	//##########################################
@@ -189,16 +190,10 @@ void ASideOpPlayerState::Die_Implementation()
 	}
 	//#############################################
 }
+*/
 
-bool ASideOpPlayerState::OnDeath()
+void ASideOpPlayerState::OnDeath()
 {
-	// Check for no lives left
-	if (PlayerLives <= 0)
-	{
-		return false;
-	}
-
-	// Otherwise were still good and just need to subtract a life
 	PlayerLives--;
-	return true;
+	return;
 }

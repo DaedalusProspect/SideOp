@@ -215,6 +215,12 @@ void ASideOpCharacter::MoveUp(float Value)
 	if (GetCharacterMovement()->IsInWater())
 	{
 		AddMovementInput(FVector(0.0f, 0.0f, 1.0f), Value);
+
+		ASideOpPlayerState* PS = Cast<ASideOpPlayerState>(PlayerState);
+		if (PS)
+		{
+			PS->UpdatePosition(GetActorLocation());
+		}
 	}
 }
 

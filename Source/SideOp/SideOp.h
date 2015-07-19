@@ -9,6 +9,7 @@
 
 #include "EngineMinimal.h"
 #include "SideOpClasses.h"
+#include "SideOpTypes.h"
 #include "Runtime/UMG/Public/UMG.h"
 #include "Runtime/UMG/Public/UMGStyle.h"
 #include "Runtime/UMG/Public/Slate/SObjectWidget.h"

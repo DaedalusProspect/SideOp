@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "SideOp.h"
+#include "SideOpTypes.h"
 #include "GameFramework/PlayerController.h"
 #include "SideOpPlayerController.generated.h"
 
@@ -9,20 +11,6 @@
 /**
  *
  */
-UENUM(BlueprintType)
-namespace EPlayerColor
-{
-	enum Color
-	{
-		Blue,
-		Beige,
-		Green,
-		Pink,
-		Yellow,
-		Unset
-	};
-}
-
 /**
  * 
  */

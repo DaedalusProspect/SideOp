@@ -77,14 +77,15 @@ public:
 
 
 	// Getters for all of our player data
-	FORCEINLINE int32 GetPlayerLives(){ return PlayerLives; }
-	FORCEINLINE int32 GetPlayerLevel(){ return PlayerLevel; }
-	FORCEINLINE EPlayerColor::Color GetPlayerColor(){ return PlayerColor; }
-	FORCEINLINE int32 GetCurrentXP(){ return CurrentXP; }
-	FORCEINLINE float GetCompletionPercent(){ return LevelCompletion; }
-	FORCEINLINE bool DidPlayerQuit(){ return bPlayerQuit; }
-	FORCEINLINE bool IsSprinting(){ return bIsSprinting; }
-	FORCEINLINE void SetSprinting(bool Sprint){ bIsSprinting = Sprint; }
+	FORCEINLINE int32 GetPlayerLives() const { return PlayerLives; }
+	FORCEINLINE int32 GetPlayerLevel() const { return PlayerLevel; }
+	FORCEINLINE TEnumAsByte<EPlayerColor::Color> GetPlayerColor() const { return PlayerColor; }
+	FORCEINLINE void SetPlayerColor(TEnumAsByte<EPlayerColor::Color> NewColor) { PlayerColor = NewColor; }
+	FORCEINLINE int32 GetCurrentXP() const { return CurrentXP; }
+	FORCEINLINE float GetCompletionPercent() const { return LevelCompletion; }
+	FORCEINLINE bool DidPlayerQuit() const { return bPlayerQuit; }
+	FORCEINLINE bool IsSprinting() const { return bIsSprinting; }
+	FORCEINLINE void SetSprinting(bool Sprint) { bIsSprinting = Sprint; }
 	
 	// Add Lives to our player
 	void AddLives(int32 Lives);
@@ -103,15 +104,17 @@ public:
 	void OnLevelUp();
 
 	// Handle a death
-	bool OnDeath();
+	void OnDeath();
 
 	// Functions to call when getting a kill or being killed
 	void ScoreKill(class ASideOpPlayerState* Victim, int32 XP);
 	void ScoreDeath(class ASideOpPlayerState* KilledBy, int32 XP);
 
+	/*
 	UFUNCTION(BlueprintNativeEvent)
 	void Die();
 	void Die_Implementation();
+	*/
 
 	void UpdatePosition(FVector Position);
 
