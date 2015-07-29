@@ -14,7 +14,9 @@ class ASideOpGameMode : public AGameMode
 {
 	GENERATED_BODY()
 
-	UClass* GetDefaultPawnClassForController_Implementation(AController* InController) override;
+	virtual UClass* GetDefaultPawnClassForController_Implementation(AController* InController) override;
+	virtual bool ShouldSpawnAtStartSpot(AController* Player) override;
+	virtual class AActor* FindPlayerStart_Implementation(AController* Player, const FString& IncomingName = TEXT("")) override;
 
 protected:
 	// The Max Level for our players

@@ -91,7 +91,14 @@ void ASideOpPlayerState::OnLevelUp()
 	PlayerLevel++;
 	int32 XPNeeded = PlayerLevel * 118;
 	int32 RemainingXP = CurrentXP - XPNeeded;
-	CurrentXP = 0;
+	if (RemainingXP < 0)
+	{
+		CurrentXP = 0;
+	}
+	else
+	{
+		CurrentXP = RemainingXP;
+	}
 	XPPercent = CurrentXP / XPNeeded;
 
 }

@@ -35,15 +35,51 @@ void ASideOpPlayerController::SetupInputComponent()
 void ASideOpPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	DeterminePawnClass();
+	//DeterminePawnClass();
 	
 }
+
+void ASideOpPlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	if (IsLocalController())
+	{
+		FString Color;
+		ASideOpPlayerState* PS = Cast<ASideOpPlayerState>(PlayerState);
+		if (PS)
+		{
+			switch (PS->GetPlayerColor())
+			{
+			case EPlayerColor::Blue:
+				Color = TEXT("Blue Pawn");
+				break;
+			case EPlayerColor::Beige:
+				Color = TEXT("Beige Pawn");
+				break;
+			case EPlayerColor::Green:
+				Color = TEXT("Green Pawn");
+				break;
+			case EPlayerColor::Pink:
+				Color = TEXT("Pink Pawn");
+				break;
+			case EPlayerColor::Yellow:
+				Color = TEXT("Yellow Pawn");
+				break;
+			default:
+				Color = TEXT("Unset");
+				break;
+			}
+		}
+
+
+		GEngine->AddOnScreenDebugMessage(2, 1.0f, FColor::White, Color);
+	}
+}
+
 
 // This determines what class our player gets to use based on the player color set in ASideOpGameMode
 void ASideOpPlayerController::DeterminePawnClass_Implementation()
 {
-	if (IsLocalController()) // Only do this on the local controller
-	{
 		ASideOpPlayerState* PS = Cast<ASideOpPlayerState>(PlayerState);
 		if (PS)
 		{
@@ -79,7 +115,6 @@ void ASideOpPlayerController::DeterminePawnClass_Implementation()
 			ServerRPCSetPawn(PlayerPawn);
 		}
 		return;
-	}
 }
 
 // Server validation to set our pawn
@@ -104,6 +139,31 @@ void ASideOpPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimePropert
 	DOREPLIFETIME(ASideOpPlayerController, PlayerPawn);
 	DOREPLIFETIME(ASideOpPlayerController, PlayerColor);
 	DOREPLIFETIME(ASideOpPlayerController, PlayerLives);
+}
+
+UClass* ASideOpPlayerController::GetPlayerPawnClass(TEnumAsByte<EPlayerColor::Color> Color)
+{
+	switch (Color)
+	{
+	case EPlayerColor::Blue:
+		return BluePlayer;
+
+	case EPlayerColor::Beige:
+		return BeigePlayer;
+
+	case EPlayerColor::Green:
+		return GreenPlayer;
+
+	case EPlayerColor::Pink:
+		return PinkPlayer;
+
+	case EPlayerColor::Yellow:
+		return YellowPlayer;
+
+	default:
+		return BluePlayer;
+	}
+
 }
 
 // What to do when we die. This currently just brings up our message, and does respawn logic
@@ -175,4 +235,14 @@ void ASideOpPlayerController::DisableMovement()
 	{
 		OurChar->DisableInput(this);
 	}
+}
+
+TEnumAsByte<EPlayerColor::Color> ASideOpPlayerController::GetPlayerColor()
+{
+	ASideOpPlayerState* PS = Cast<ASideOpPlayerState>(PlayerState);
+	if (PS)
+	{
+		return PS->GetPlayerColor();
+	}
+	return EPlayerColor::Unset;
 }

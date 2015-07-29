@@ -40,6 +40,9 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	// allow updates every tick
+	virtual void Tick(float DeltaSeconds) override;
+
 	UFUNCTION(Reliable, Server, WithValidation)
 	void ServerRPCSetPawn(TSubclassOf<APawn> InPawnClass);
 	virtual void ServerRPCSetPawn_Implementation(TSubclassOf<APawn> InPawnClass);
@@ -76,10 +79,10 @@ public:
 
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	FORCEINLINE UClass* GetPlayerPawnClass(){ return PlayerPawn; }
-	FORCEINLINE EPlayerColor::Color GetPlayerColor(){ return PlayerColor; }
+	UClass* GetPlayerPawnClass(TEnumAsByte<EPlayerColor::Color> Color);
+	TEnumAsByte<EPlayerColor::Color> GetPlayerColor();
 
-	FORCEINLINE void SetPlayerColor(EPlayerColor::Color Color){ PlayerColor = Color; }
+	// FORCEINLINE void SetPlayerColor(EPlayerColor::Color Color){ PlayerColor = Color; }
 
 	// Called to add a coin to our characters score
 	UFUNCTION(BlueprintCallable, Category = "Coins")

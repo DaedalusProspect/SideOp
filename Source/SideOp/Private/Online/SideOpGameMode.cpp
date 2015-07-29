@@ -14,7 +14,7 @@ ASideOpGameMode::ASideOpGameMode(const FObjectInitializer& ObjectInitializer)
 	}
 
 	// Dont have our players spawn automatically, do it manually
-	bStartPlayersAsSpectators = true;
+	bStartPlayersAsSpectators = false;
 
 	
 	
@@ -29,29 +29,33 @@ void ASideOpGameMode::BeginPlay()
 void ASideOpGameMode::PostLogin(APlayerController* InController)
 {
 	ASideOpPlayerState* PS = Cast<ASideOpPlayerState>(InController->PlayerState);
+	ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(InController);
 	// Set our player color based on this controllers player num
 	if (PS)
 	{
-		switch (NumPlayers)
+		if (PC)
 		{
-		case 0:
-			PS->SetPlayerColor(EPlayerColor::Blue);
-			break;
-		case 1:
-			PS->SetPlayerColor(EPlayerColor::Beige);
-			break;
-		case 2:
-			PS->SetPlayerColor(EPlayerColor::Green);
-			break;
-		case 3:
-			PS->SetPlayerColor(EPlayerColor::Pink);
-			break;
-		case 4:
-			PS->SetPlayerColor(EPlayerColor::Yellow);
-			break;
-		default:
-			PS->SetPlayerColor(EPlayerColor::Blue);
-			break;
+			switch (NumPlayers)
+			{
+			case 0:
+				PS->SetPlayerColor(EPlayerColor::Blue);
+				break;
+			case 1:
+				PS->SetPlayerColor(EPlayerColor::Beige);
+				break;
+			case 2:
+				PS->SetPlayerColor(EPlayerColor::Green);
+				break;
+			case 3:
+				PS->SetPlayerColor(EPlayerColor::Pink);
+				break;
+			case 4:
+				PS->SetPlayerColor(EPlayerColor::Yellow);
+				break;
+			default:
+				PS->SetPlayerColor(EPlayerColor::Blue);
+				break;
+			}
 		}
 	}
 	Super::PostLogin(InController);
@@ -61,10 +65,10 @@ void ASideOpGameMode::PostLogin(APlayerController* InController)
 UClass* ASideOpGameMode::GetDefaultPawnClassForController_Implementation(AController* InController)
 {
 	ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(InController);
+	ASideOpPlayerState* PS = Cast<ASideOpPlayerState>(InController->PlayerState);
 	if (PC)
 	{
-		// return our pawn class from the controller
-		return PC->GetPlayerPawnClass();
+		return PC->GetPlayerPawnClass(PS->GetPlayerColor());
 	}
 
 	// return the default if we dont get our own
@@ -75,15 +79,21 @@ UClass* ASideOpGameMode::GetDefaultPawnClassForController_Implementation(AContro
 AActor* ASideOpGameMode::ChoosePlayerStart_Implementation(AController* Player)
 {
 	ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(Player);
-	if (PC)
+
+	if (!PC)
+		return Super::ChoosePlayerStart_Implementation(Player);
+
+	ASideOpPlayerState* PState = Cast<ASideOpPlayerState>(PC->PlayerState);
+
+	if (PState)
 	{
 		// Iterate through the starts and find the one with the tag that matches the player
 		for (TActorIterator<ASideOpPlayerStart> It(GetWorld()); It; ++It)
 		{
-			ASideOpPlayerStart* PS = Cast<ASideOpPlayerStart>(It->StaticClass());
+			ASideOpPlayerStart* PS = *It;
 			if (PS)
 			{
-				if (PC->GetPlayerColor() == PS->GetStartColor())
+				if (PState->GetPlayerColor() == PS->GetStartColor())
 				{
 					return PS;
 				}
@@ -96,6 +106,77 @@ AActor* ASideOpGameMode::ChoosePlayerStart_Implementation(AController* Player)
 	}
 	 return Super::ChoosePlayerStart_Implementation(Player);
 } 
+
+bool ASideOpGameMode::ShouldSpawnAtStartSpot(AController* Player)
+{
+	return true;
+}
+
+class AActor* ASideOpGameMode::FindPlayerStart_Implementation(AController* Player, const FString& IncomingName)
+{
+	AActor* BestStart = ChoosePlayerStart(Player);
+	return BestStart;
+	/* // THIS IS CURRENTLY BROKEN
+	// See if we even got a player at all
+	if (Player)
+	{
+		// If there is already a start name being passed in, just run normal code
+		if (!IncomingName.IsEmpty())
+		{
+			return Super::FindPlayerStart_Implementation(Player, IncomingName);
+		}
+		else
+		{
+			// First cast our PC to our PC to get its player color
+			ASideOpPlayerController* PC = Cast<ASideOpPlayerController>(Player);
+			if (PC)
+			{
+				FString Color = TEXT("NONE");
+
+				switch (PC->GetPlayerColor())
+				{
+				case EPlayerColor::Blue:
+					Color = TEXT("BLUE");
+					break;
+				case EPlayerColor::Beige:
+					Color = TEXT("BEIGE");
+					break;
+				case EPlayerColor::Green:
+					Color = TEXT("GREEN");
+					break;
+				case EPlayerColor::Pink:
+					Color = TEXT("PINK");
+					break;
+				case EPlayerColor::Yellow:
+					Color = TEXT("YELLOW");
+					break;
+				default:
+					Color = TEXT("NONE");
+					break;
+				}
+
+				// If we didnt get a color run default
+				if (Color == TEXT("NONE"))
+				{
+					return Super::FindPlayerStart_Implementation(Player, IncomingName);
+				}
+				else
+				{
+					// We got everything we need, so run with a color for the spawn
+					return Super::FindPlayerStart_Implementation(Player, Color);
+				}
+			}
+		}
+	}
+	else
+	{
+		return Super::FindPlayerStart_Implementation(Player, IncomingName);
+	}
+
+	// We got nothing, so just do the default
+	return Super::FindPlayerStart_Implementation(Player, IncomingName);
+	*/
+}
 
 void ASideOpGameMode::SeedXPTable(int32 Seed)
 {
